@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\EmbeddedResourceBrowser\EmbeddedResourceBrowser.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CodeMap.Handlebars" Version="1.0.0-beta1" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\Style.css" />
+    <EmbeddedResource Include="Assets\favicon.ico" />
+    <EmbeddedResource Include="Partials\Breadcrumbs.hbs" />
+    <EmbeddedResource Include="Partials\Layout.hbs" />
+    <EmbeddedResource Include="Templates\Assembly.hbs" />
+  </ItemGroup>
+
+</Project>

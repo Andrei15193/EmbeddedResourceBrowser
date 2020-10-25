@@ -109,5 +109,22 @@ namespace EmbeddedResourceBrowser
 
         /// <summary>Gets the list of embedded files.</summary>
         public NamedReadOnlyList<EmbeddedFile> Files { get; }
+
+        /// <summary>Gets all files from the current embedded directory and all embedded subdirectories.</summary>
+        /// <returns>Returns a collection containing all embedded files in the current embedded directory and subdirectories.</returns>
+        public IEnumerable<EmbeddedFile> GetAllFiles()
+        {
+            var directoriesToVisit = new Stack<EmbeddedDirectory>();
+            directoriesToVisit.Push(this);
+
+            do
+            {
+                var currentDirectory = directoriesToVisit.Pop();
+                foreach (var file in currentDirectory.Files)
+                    yield return file;
+                for (var index = currentDirectory.Subdirectories.Count - 1; index >= 0; index--)
+                    directoriesToVisit.Push(currentDirectory.Subdirectories[index]);
+            } while (directoriesToVisit.Count > 0);
+        }
     }
 }

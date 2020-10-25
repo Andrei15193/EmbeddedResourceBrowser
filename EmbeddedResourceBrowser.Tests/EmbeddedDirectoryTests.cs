@@ -113,5 +113,22 @@ namespace EmbeddedResourceBrowser.Tests
             Assert.Single(embeddedResources2Directory.Files);
             Assert.Equal("test file 4.txt", embeddedResources2Directory.Files[0].Name);
         }
+
+        [Fact]
+        public void EmbeddedDirectory_WithFilesInSubdirectories_ListsAllEmbeddedFiles()
+        {
+            var embeddedDirectory = new EmbeddedDirectory(new[] { typeof(EmbeddedDirectoryTests).Assembly });
+
+            Assert.Equal(
+                new[]
+                {
+                    "test file 1.txt",
+                    "test file 2.txt",
+                    "test file 3.txt",
+                    "test file 4.txt"
+                },
+                embeddedDirectory.GetAllFiles().Select(file => file.Name)
+            );
+        }
     }
 }

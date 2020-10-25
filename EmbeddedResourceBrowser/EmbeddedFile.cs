@@ -13,6 +13,7 @@ namespace EmbeddedResourceBrowser
         {
             ParentDirectory = parentDirectory;
             Name = name;
+            Extension = name.Substring(name.LastIndexOf('.'));
             _assembly = assembly;
             _resourceName = resourceName;
         }
@@ -22,6 +23,9 @@ namespace EmbeddedResourceBrowser
 
         /// <summary>Gets the name of the embedded file.</summary>
         public string Name { get; }
+
+        /// <summary>Gets the extension of the file.</summary>
+        public string Extension { get; }
 
         /// <summary>Gets a <see cref="Stream"/> for reading the contents of the embedded file.</summary>
         /// <returns>Returns a <see cref="Stream"/> that can be used for reading the contents of the embedded file.</returns>

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <TreatSpecificWarningsAsErrors />
+    <Description>A small utility library for browsing the embedded resources of an assembly.</Description>
+    <Authors>Andrei15193</Authors>
+    <Copyright>Andrei15193</Copyright>
+    <PackageProjectUrl>https://Andrei15193.github.io/EmbeddedResourceBrowser</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageIcon>logo.png</PackageIcon>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/Andrei15193/EmbeddedResourceBrowser.git</RepositoryUrl>
+    <PackageReleaseNotes>* Added embedded resource browser.</PackageReleaseNotes>
+    <PackageTags>embedded resource assembly browser</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\LICENSE" Pack="true" PackagePath="" Visible="false" />
+    <None Include="..\logo.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+</Project>

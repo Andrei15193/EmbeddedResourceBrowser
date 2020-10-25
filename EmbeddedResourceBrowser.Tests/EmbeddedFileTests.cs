@@ -6,13 +6,14 @@ namespace EmbeddedResourceBrowser.Tests
     public class EmbeddedFileTests
     {
         [Fact]
-        public void EmbeddedFile_TestFile1_HasNameAndParentDirectorySet()
+        public void EmbeddedFile_TestFile1_HasNameExtensionAndParentDirectorySet()
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
             var embeddedResources1Directory = assemblyDirectory.Subdirectories["EmbeddedResources1"];
             var testFile1 = embeddedResources1Directory.Files["test file 1.txt"];
             Assert.Equal("test file 1.txt", testFile1.Name);
+            Assert.Equal(".txt", testFile1.Extension);
             Assert.Same(embeddedResources1Directory, testFile1.ParentDirectory);
         }
 
@@ -29,13 +30,14 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
-        public void EmbeddedFile_TestFile2_HasNameAndParentDirectorySet()
+        public void EmbeddedFile_TestFile2_HasNameExtensionAndParentDirectorySet()
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
             var embeddedResources1Directory = assemblyDirectory.Subdirectories["EmbeddedResources1"];
             var testFile2 = embeddedResources1Directory.Files["test file 2.txt"];
             Assert.Equal("test file 2.txt", testFile2.Name);
+            Assert.Equal(".txt", testFile2.Extension);
             Assert.Same(embeddedResources1Directory, testFile2.ParentDirectory);
         }
 
@@ -52,13 +54,14 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
-        public void EmbeddedFile_TestFile3_HasNameAndParentDirectorySet()
+        public void EmbeddedFile_TestFile3_HasNameExtensionAndParentDirectorySet()
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
             var embeddedResourceSubdirectory = assemblyDirectory.Subdirectories["EmbeddedResources1"].Subdirectories["EmbeddedResourceSubdirectory"];
             var testFile3 = embeddedResourceSubdirectory.Files["test file 3.txt"];
             Assert.Equal("test file 3.txt", testFile3.Name);
+            Assert.Equal(".txt", testFile3.Extension);
             Assert.Same(embeddedResourceSubdirectory, testFile3.ParentDirectory);
         }
 
@@ -75,13 +78,14 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
-        public void EmbeddedFile_TestFile4_HasNameAndParentDirectorySet()
+        public void EmbeddedFile_TestFile4_HasNameExtensionAndParentDirectorySet()
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
             var embeddedResources2Directory = assemblyDirectory.Subdirectories["EmbeddedResources2"];
             var testFile4 = embeddedResources2Directory.Files["test file 4.txt"];
             Assert.Equal("test file 4.txt", testFile4.Name);
+            Assert.Equal(".txt", testFile4.Extension);
             Assert.Same(embeddedResources2Directory, testFile4.ParentDirectory);
         }
 

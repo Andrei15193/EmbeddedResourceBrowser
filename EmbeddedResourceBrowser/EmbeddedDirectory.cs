@@ -98,7 +98,7 @@ namespace EmbeddedResourceBrowser
             );
         }
 
-        /// <summary>The name of the embedded directory, the root directory has an empty string (<see cref="string.Empty"/>) as its name.</summary>
+        /// <summary>The name of the embedded directory.</summary>
         public string Name { get; }
 
         /// <summary>Gets the parent <see cref="EmbeddedDirectory"/>, the root directory has a <c>null</c> parent directory.</summary>

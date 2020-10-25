@@ -20,10 +20,10 @@ jobs:
         git fetch origin gh-pages
         git checkout gh-pages
         New-Item -ItemType Directory -Name project-site -ErrorAction SilentlyContinue | Out-Null
-        New-Item -ItemType Directory -Name project-site/dev -ErrorAction SilentlyContinue | Out-Null
         Get-ChildItem -Exclude @(".*", "project-site") |
           Where-Object { ($_ -is [System.IO.DirectoryInfo] -and -not $_.Name.StartsWith("EmbeddedResourceBrowser")) -or $_ -is [System.IO.FileInfo] } |
           Move-Item -Destination project-site
+        New-Item -ItemType Directory -Name project-site/dev -ErrorAction SilentlyContinue | Out-Null
         git checkout ($env:GITHUB_REF.Substring("refs/heads/".Length))
 
     - name: Generate Package Info

@@ -119,6 +119,7 @@ jobs:
       run: dotnet restore
 
     - name: Build
+      shell: pwsh
       run: |
         dotnet build `
           --configuration Release `
@@ -128,6 +129,7 @@ jobs:
           -property:DisableStrongNamer=False
 
     - name: Test
+      shell: pwsh
       run: |
         dotnet test `
           --configuration Release `

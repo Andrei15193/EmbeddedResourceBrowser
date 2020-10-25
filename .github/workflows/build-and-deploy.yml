@@ -14,6 +14,18 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
+    - name: Copy Project Site for Updates
+      shell: pwsh
+      run: |
+        git fetch origin gh-pages
+        git checkout gh-pages
+        New-Item -ItemType Directory -Name project-site -ErrorAction SilentlyContinue | Out-Null
+        New-Item -ItemType Directory -Name project-site/dev -ErrorAction SilentlyContinue | Out-Null
+        Get-ChildItem -Exclude @(".*", "project-site") |
+          Where-Object { ($_ -is [System.IO.DirectoryInfo] -and -not $_.Name.StartsWith("EmbeddedResourceBrowser")) -or $_ -is [System.IO.FileInfo] } |
+          Move-Item -Destination project-site
+        git checkout ($env:GITHUB_REF.Substring("refs/heads/".Length))
+
     - name: Generate Package Info
       id: package_info
       shell: pwsh
@@ -176,12 +188,6 @@ jobs:
         asset_path: ./publish/EmbeddedResourceBrowser.${{ steps.package_info.outputs.package_version }}.nupkg
         asset_name: EmbeddedResourceBrowser.${{ steps.package_info.outputs.package_version }}.nupkg
         asset_content_type: application/zip
-
-    - name: Prepare Project Site Build
-      shell: pwsh
-      run: |
-        mkdir ./project-site
-        mkdir ./project-site/dev
 
     - name: Generate Project Site (dev)
       if: github.ref == 'refs/heads/master'

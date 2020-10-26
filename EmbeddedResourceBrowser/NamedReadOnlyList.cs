@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EmbeddedResourceBrowser
 {
-    /// <summary>A <see cref="IReadOnlyList{T}"/> containing elements that can be accessed by their name.</summary>
+    /// <summary>An <see cref="IReadOnlyList{T}"/> containing elements that can be accessed by their name.</summary>
     /// <typeparam name="T">The type of element that is contained in the collection,</typeparam>
     /// <remarks>
     /// All items in the collection are sorted by their name and searched using case-insensitive comparison (<see cref="StringComparer.OrdinalIgnoreCase"/>).

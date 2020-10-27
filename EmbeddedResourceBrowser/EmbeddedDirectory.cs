@@ -122,8 +122,8 @@ namespace EmbeddedResourceBrowser
                 var currentDirectory = directoriesToVisit.Pop();
                 foreach (var file in currentDirectory.Files)
                     yield return file;
-                foreach (var subdirectory in currentDirectory.Subdirectories.Reverse())
-                    directoriesToVisit.Push(subdirectory);
+                for (var subdirectoryIndex = currentDirectory.Subdirectories.Count - 1; subdirectoryIndex >= 0; subdirectoryIndex--)
+                    directoriesToVisit.Push(currentDirectory.Subdirectories[subdirectoryIndex]);
             } while (directoriesToVisit.Count > 0);
         }
     }

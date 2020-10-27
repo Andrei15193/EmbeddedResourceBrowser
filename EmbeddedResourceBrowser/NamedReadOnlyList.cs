@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EmbeddedResourceBrowser
 {
@@ -12,15 +11,25 @@ namespace EmbeddedResourceBrowser
     /// </remarks>
     public class NamedReadOnlyList<T> : IReadOnlyList<T>
     {
-        private readonly IReadOnlyDictionary<string, T> _items;
+        private readonly SortedList<string, T> _items;
 
         internal NamedReadOnlyList(IEnumerable<T> items, Func<T, string> nameSelector)
         {
-            var sortedItems = new SortedList<string, T>(StringComparer.OrdinalIgnoreCase);
+            _items = new SortedList<string, T>(StringComparer.OrdinalIgnoreCase);
             foreach (var item in items)
-                sortedItems.Add(nameSelector(item), item);
-            _items = sortedItems;
+                _items.Add(nameSelector(item), item);
         }
+
+        /// <summary>Gets the number of items in the collection.</summary>
+        public int Count
+            => _items.Count;
+
+        /// <summary>Gets the element at the provided <paramref name="index"/></summary>
+        /// <exception cref="System.ArgumentOutOfRangeException">
+        /// Thrown when the provided <paramref name="index"/> is less than <c>0</c> or greater than or equal to the total number of items in the collection.
+        /// </exception>
+        public T this[int index]
+            => _items.Values[index];
 
         /// <summary>Gets the element with the provided <paramref name="name"/></summary>
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is <c>null</c></exception>
@@ -42,17 +51,6 @@ namespace EmbeddedResourceBrowser
         /// <exception cref="ArgumentNullException">Thrown when <paramref name="name"/> is <c>null</c></exception>
         public bool TryGetValue(string name, out T value)
             => _items.TryGetValue(name, out value);
-
-        /// <summary>Gets the element at the provided <paramref name="index"/></summary>
-        /// <exception cref="System.ArgumentOutOfRangeException">
-        /// Thrown when the provided <paramref name="index"/> is less than <c>0</c> or greater than or equal to the total number of items in the collection.
-        /// </exception>
-        public T this[int index]
-        => _items.ElementAt(index).Value;
-
-        /// <summary>Gets the number of items in the collection.</summary>
-        public int Count
-            => _items.Count;
 
         /// <summary>Returns an enumerator that iterates through the collection.</summary>
         /// <returns>An enumerator that can be used to iterate through the collection.</returns>

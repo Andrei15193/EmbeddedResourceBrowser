@@ -41,7 +41,7 @@
 <h2>Item Property</h2>
 
 <p>Property type: T.</p>
-<p>Gets the element at the provided <em>index</em>
+<p>Gets the element with the provided <em>name</em>
 </p>
 
 <p>This is a read only property (<code>public get</code>).</p>
@@ -53,15 +53,19 @@
 <h3>Parameters</h3>
 <ul>
     <li>
-        <h5>index: <a href="https://docs.microsoft.com/dotnet/api/System.Int32?view=netstandard-1.6">int</a></h5>
+        <h5>name: <a href="https://docs.microsoft.com/dotnet/api/System.String?view=netstandard-1.6">string</a></h5>
 
     </li>
 </ul>
 
 <h3>Exceptions</h3>
 <ul>
-    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.ArgumentOutOfRangeException?view=netstandard-1.6">ArgumentOutOfRangeException</a></h5>
-<p>Thrown when the provided <em>index</em> is less than <code>0</code> or greater than or equal to the total number of items in the collection.
+    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.ArgumentNullException?view=netstandard-1.6">ArgumentNullException</a></h5>
+<p>Thrown when <em>name</em> is <code>null</code>
+</p>
+</li>
+    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.KeyNotFoundException?view=netstandard-1.6">KeyNotFoundException</a></h5>
+<p>Thrown with an element with the given <em>name</em> does not exist.
 </p>
 </li>
 </ul>

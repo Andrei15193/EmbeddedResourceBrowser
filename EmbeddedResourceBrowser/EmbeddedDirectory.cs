@@ -111,7 +111,7 @@ namespace EmbeddedResourceBrowser
         public NamedReadOnlyList<EmbeddedFile> Files { get; }
 
         /// <summary>Gets all subdirectires, from all levels, from the current embedded directory.</summary>
-        /// <returns>Returns a collection containing all embedded directories from the current embedded directory tree.</returns>
+        /// <returns>Returns a collection containing all subdirectories from the current embedded directory tree.</returns>
         public IEnumerable<EmbeddedDirectory> GetAllSubdirectories()
         {
             var subdirectoriesToVisit = new Stack<EmbeddedDirectory>(Subdirectories);
@@ -126,8 +126,8 @@ namespace EmbeddedResourceBrowser
             }
         }
 
-        /// <summary>Gets all files from the current embedded directory and all embedded subdirectories.</summary>
-        /// <returns>Returns a collection containing all embedded files in the current embedded directory and subdirectories.</returns>
+        /// <summary>Gets all files from the current embedded directory and all embedded subdirectories, from all levels.</summary>
+        /// <returns>Returns a collection containing all files in the current embedded directory tree.</returns>
         public IEnumerable<EmbeddedFile> GetAllFiles()
             => Files.Concat(GetAllSubdirectories().SelectMany(directory => directory.Files));
     }

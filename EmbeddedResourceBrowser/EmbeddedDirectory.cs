@@ -104,27 +104,31 @@ namespace EmbeddedResourceBrowser
         /// <summary>Gets the parent <see cref="EmbeddedDirectory"/>, the root directory has a <c>null</c> parent directory.</summary>
         public EmbeddedDirectory ParentDirectory { get; }
 
-        /// <summary>Gets the list of embedded subdirectories.</summary>
+        /// <summary>Gets the list of the embedded subdirectories.</summary>
         public NamedReadOnlyList<EmbeddedDirectory> Subdirectories { get; }
 
-        /// <summary>Gets the list of embedded files.</summary>
+        /// <summary>Gets the list of the embedded files.</summary>
         public NamedReadOnlyList<EmbeddedFile> Files { get; }
+
+        /// <summary>Gets all subdirectires, from all levels, from the current embedded directory.</summary>
+        /// <returns>Returns a collection containing all embedded directories from the current embedded directory tree.</returns>
+        public IEnumerable<EmbeddedDirectory> GetAllSubdirectories()
+        {
+            var subdirectoriesToVisit = new Stack<EmbeddedDirectory>(Subdirectories);
+
+            while (subdirectoriesToVisit.Count > 0)
+            {
+                var currentSubdirectory = subdirectoriesToVisit.Pop();
+                yield return currentSubdirectory;
+
+                for (var subdirectoryIndex = currentSubdirectory.Subdirectories.Count - 1; subdirectoryIndex >= 0; subdirectoryIndex--)
+                    subdirectoriesToVisit.Push(currentSubdirectory.Subdirectories[subdirectoryIndex]);
+            }
+        }
 
         /// <summary>Gets all files from the current embedded directory and all embedded subdirectories.</summary>
         /// <returns>Returns a collection containing all embedded files in the current embedded directory and subdirectories.</returns>
         public IEnumerable<EmbeddedFile> GetAllFiles()
-        {
-            var directoriesToVisit = new Stack<EmbeddedDirectory>();
-            directoriesToVisit.Push(this);
-
-            do
-            {
-                var currentDirectory = directoriesToVisit.Pop();
-                foreach (var file in currentDirectory.Files)
-                    yield return file;
-                for (var subdirectoryIndex = currentDirectory.Subdirectories.Count - 1; subdirectoryIndex >= 0; subdirectoryIndex--)
-                    directoriesToVisit.Push(currentDirectory.Subdirectories[subdirectoryIndex]);
-            } while (directoriesToVisit.Count > 0);
-        }
+            => Files.Concat(GetAllSubdirectories().SelectMany(directory => directory.Files));
     }
 }

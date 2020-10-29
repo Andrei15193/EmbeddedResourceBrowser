@@ -87,7 +87,7 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
-        public void EmbeddedDirectory_WithFilesInSubdirectories_ListsEmbeddedFiles()
+        public void EmbeddedDirectory_WithFilesInSubdirectories_ListsEmbeddedFilesForEachDirectory()
         {
             var embeddedDirectory = new EmbeddedDirectory(new[] { typeof(EmbeddedDirectoryTests).Assembly });
 
@@ -115,7 +115,7 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
-        public void EmbeddedDirectory_WithFilesInSubdirectories_ListsAllEmbeddedFiles()
+        public void GetAllFiles_WithFilesInSubdirectories_ListsAllEmbeddedFiles()
         {
             var embeddedDirectory = new EmbeddedDirectory(new[] { typeof(EmbeddedDirectoryTests).Assembly });
 
@@ -128,6 +128,24 @@ namespace EmbeddedResourceBrowser.Tests
                     "test file 4.txt"
                 },
                 embeddedDirectory.GetAllFiles().Select(file => file.Name)
+            );
+        }
+
+
+        [Fact]
+        public void GetAllSubdirectories_WithFilesInSubdirectories_ListsAllEmbeddedDirectories()
+        {
+            var embeddedDirectory = new EmbeddedDirectory(new[] { typeof(EmbeddedDirectoryTests).Assembly });
+
+            Assert.Equal(
+                new[]
+                {
+                    "EmbeddedResourceBrowser.Tests",
+                    "EmbeddedResources1",
+                    "EmbeddedResourceSubdirectory",
+                    "EmbeddedResources2"
+                },
+                embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
             );
         }
     }

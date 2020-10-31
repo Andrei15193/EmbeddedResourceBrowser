@@ -151,6 +151,22 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
+        public void Merge_WithNullAssemblies_ThrowsException()
+        {
+            var exception = Assert.Throws<ArgumentException>("assemblies", () => EmbeddedDirectory.Merge((IEnumerable<Assembly>)null));
+
+            Assert.Equal(new ArgumentException("Cannot be null or contain null values.", "assemblies").Message, exception.Message);
+        }
+
+        [Fact]
+        public void Merge_WithAssembliesCollectionContainingNull_ThrowsException()
+        {
+            var exception = Assert.Throws<ArgumentException>("assemblies", () => EmbeddedDirectory.Merge(new Assembly[] { null }));
+
+            Assert.Equal(new ArgumentException("Cannot be null or contain null values.", "assemblies").Message, exception.Message);
+        }
+
+        [Fact]
         public void Merge_WithFilesInSubdirectories_MergesDirectories()
         {
             var embeddedDirectory = EmbeddedDirectory.Merge(typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly);

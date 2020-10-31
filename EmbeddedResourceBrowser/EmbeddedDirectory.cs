@@ -20,6 +20,10 @@ namespace EmbeddedResourceBrowser
         /// Returns an <see cref="EmbeddedDirectory"/> containing the merged resources from all provided <paramref name="assemblies"/>. If multiple resources have the
         /// same name, then latest one is picked (regardless of assembly name).
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <para>Thrown when the provided <paramref name="assemblies"/> are <c>null</c> or contains <c>null</c> values.</para>
+        /// <para>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.</para>
+        /// </exception>
         /// <example>
         /// Given two assemblies with the following embedded resources:
         /// <code>
@@ -46,11 +50,18 @@ namespace EmbeddedResourceBrowser
         /// The matching is done by ignoring the case of each directory and file.
         /// </example>
         public static EmbeddedDirectory Merge(IEnumerable<Assembly> assemblies)
-            => new EmbeddedDirectory(
+        {
+            if (assemblies is null)
+                throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies));
+
+            return new EmbeddedDirectory(
                 assemblies
-                    .SelectMany(assembly => assembly.GetManifestResourceNames().Select(resourceName => new ResourcePair(assembly, resourceName)))
+                    .SelectMany(assembly =>  assembly is null
+                        ? throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies))
+                        : assembly.GetManifestResourceNames().Select(resourceName => new ResourcePair(assembly, resourceName)))
                     .GroupBy(resourcePair => resourcePair.ResourceName, (resourceName, resourcePairs) => resourcePairs.Last(), StringComparer.OrdinalIgnoreCase)
             );
+        }
 
         /// <summary>Creates an <see cref="EmbeddedDirectory"/> containing the resources from all provided <paramref name="assemblies"/> using a merge strategy.</summary>
         /// <param name="assemblies">The <see cref="Assembly"/> objects from where to map embedded resources.</param>
@@ -58,6 +69,10 @@ namespace EmbeddedResourceBrowser
         /// Returns an <see cref="EmbeddedDirectory"/> containing the merged resources from all provided <paramref name="assemblies"/>. If multiple resources have the
         /// same name, then latest one is picked (regardless of assembly name).
         /// </returns>
+        /// <exception cref="ArgumentException">
+        /// <para>Thrown when the provided <paramref name="assemblies"/> are <c>null</c> or contains <c>null</c> values.</para>
+        /// <para>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.</para>
+        /// </exception>
         /// <example>
         /// Given two assemblies with the following embedded resources:
         /// <code>

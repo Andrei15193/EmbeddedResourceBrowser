@@ -12,7 +12,10 @@
     <PackageIcon>logo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Andrei15193/EmbeddedResourceBrowser.git</RepositoryUrl>
-    <PackageReleaseNotes>* Added embedded resource browser.</PackageReleaseNotes>
+    <PackageReleaseNotes>
+* Added Merge method for creating an EmbeddedDirectory.
+* Added GetAllSubdirectories method for traversing all subdirectories of an EmbeddedDirectory.
+    </PackageReleaseNotes>
     <PackageTags>embedded resource assembly browser</PackageTags>
   </PropertyGroup>
 

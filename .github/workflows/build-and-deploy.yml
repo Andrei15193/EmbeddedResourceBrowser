@@ -3,7 +3,7 @@ name: Build and Deploy
 on:
   push:
     branches:
-      - master
+      - dev
       - releases/*
 
 jobs:
@@ -23,7 +23,6 @@ jobs:
         Get-ChildItem -Exclude @(".*", "project-site") |
           Where-Object { ($_ -is [System.IO.DirectoryInfo] -and -not $_.Name.StartsWith("EmbeddedResourceBrowser")) -or $_ -is [System.IO.FileInfo] } |
           Move-Item -Destination project-site
-        New-Item -ItemType Directory -Name project-site/dev -ErrorAction SilentlyContinue | Out-Null
         git checkout ($env:GITHUB_REF.Substring("refs/heads/".Length))
 
     - name: Generate Package Info
@@ -31,9 +30,10 @@ jobs:
       shell: pwsh
       run: |
         git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-        $releaseBranchName = $env:GITHUB_REF.Substring($env:GITHUB_REF.LastIndexOf('/') + 1)
-        if (-not ($releaseBranchName -match "^\d+\.\d+(-(alpha|beta|rc))?$"))
+        $projectDirectoryPath = "./project-site"
+        if (-not ($env:GITHUB_REF -match "^refs/heads/releases/\d+\.\d+(-(alpha|beta|rc))?$"))
         {
+          $projectDirectoryPath += $env:GITHUB_REF.Substring("refs/heads".Length);
           $majorVersion = 0
           (git tag) |
             Where-Object { $_ -match "^\d+\.\d+\.\d+(-\w+\d*)?$" } |
@@ -45,6 +45,7 @@ jobs:
         }
         else
         {
+          $releaseBranchName = $env:GITHUB_REF.Substring($env:GITHUB_REF.LastIndexOf('/') + 1)
           $minorVersionSeparatorIndex = $releaseBranchName.IndexOf('.')
           $preReleaseVersionSeparatorIndex = $releaseBranchName.IndexOf('-')
 
@@ -107,6 +108,10 @@ jobs:
         }
         $description = (Select-Xml -Path ./EmbeddedResourceBrowser/EmbeddedResourceBrowser.csproj -XPath "//Project/PropertyGroup/Description/text()").Node.Data.Trim() -replace '\r?\n\r?','%0A'
         $releaseNotes = (Select-Xml -Path ./EmbeddedResourceBrowser/EmbeddedResourceBrowser.csproj -XPath "//Project/PropertyGroup/PackageReleaseNotes/text()").Node.Data.Trim() -replace '\r?\n\r?','%0A'
+
+        New-Item -ItemType Directory -Name $projectDirectoryPath -ErrorAction SilentlyContinue | Out-Null
+
+        Write-Host "::set-output name=project_directory_path::$projectDirectoryPath"
         Write-Host "::set-output name=package_version::$packageVersion"
         Write-Host "::set-output name=assembly_version::$assemblyVersion"
         Write-Host "::set-output name=package_description::$description"
@@ -189,16 +194,8 @@ jobs:
         asset_name: EmbeddedResourceBrowser.${{ steps.package_info.outputs.package_version }}.nupkg
         asset_content_type: application/zip
 
-    - name: Generate Project Site (dev)
-      if: github.ref == 'refs/heads/master'
-      working-directory: ./project-site/dev
-      shell: pwsh
-      run: |
-        dotnet run --project ../../EmbeddedResourceBrowser.Documentation --configuration Release
-
-    - name: Generate Project Site (Release)
-      if: startsWith(github.ref, 'refs/heads/releases/')
-      working-directory: ./project-site
+    - name: Generate Project Site
+      working-directory: ${{ steps.package_info.project_directory_path }}
       shell: pwsh
       run: |
         dotnet run --project ../EmbeddedResourceBrowser.Documentation --configuration Release

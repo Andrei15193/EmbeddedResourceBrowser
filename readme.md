@@ -4,3 +4,5 @@
 A small utility library for browsing the embedded resources of an assembly.
 
 For project documentation go to https://Andrei15193.github.io/EmbeddedResourceBrowser
+
+To see the latest development (`dev` branch) go to https://andrei15193.github.io/EmbeddedResourceBrowser/dev

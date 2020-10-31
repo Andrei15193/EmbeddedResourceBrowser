@@ -60,6 +60,14 @@
 <h3>Returns: <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a></h3>
 <p>Returns an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> containing the merged resources from all provided <em>assemblies</em>. If multiple resources have the same name, then latest one is picked (regardless of assembly name).
 </p>
+<h3>Exceptions</h3>
+<ul>
+    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.ArgumentException?view=netstandard-1.6">ArgumentException</a></h5>
+<p>Thrown when the provided <em>assemblies</em> are <code>null</code> or contains <code>null</code> values.
+</p><p>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.
+</p>
+</li>
+</ul>
 
 
 <h3>Example</h3>

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedResourceBrowser.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedResourceBrowser.Documentation", "EmbeddedResourceBrowser.Documentation\EmbeddedResourceBrowser.Documentation.csproj", "{812765A8-9629-4D99-896F-107D33D475E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmbeddedResourceBrowser.MergeTests", "EmbeddedResourceBrowser.MergeTests\EmbeddedResourceBrowser.MergeTests.csproj", "{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,5 +60,17 @@ Global
 		{812765A8-9629-4D99-896F-107D33D475E9}.Release|x64.Build.0 = Release|Any CPU
 		{812765A8-9629-4D99-896F-107D33D475E9}.Release|x86.ActiveCfg = Release|Any CPU
 		{812765A8-9629-4D99-896F-107D33D475E9}.Release|x86.Build.0 = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|x64.Build.0 = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Debug|x86.Build.0 = Debug|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|x64.ActiveCfg = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|x64.Build.0 = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|x86.ActiveCfg = Release|Any CPU
+		{EC05E14E-66FD-4991-AEAD-7A6E4A63DC0B}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,1 @@
+This is a text file. The content is overridden, just for testing the merge feature.

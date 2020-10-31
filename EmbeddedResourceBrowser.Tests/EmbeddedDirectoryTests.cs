@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EmbeddedResourceBrowser.MergeTests;
 using Xunit;
 
 namespace EmbeddedResourceBrowser.Tests
@@ -144,6 +145,23 @@ namespace EmbeddedResourceBrowser.Tests
                     "EmbeddedResources1",
                     "EmbeddedResourceSubdirectory",
                     "EmbeddedResources2"
+                },
+                embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
+            );
+        }
+
+        [Fact]
+        public void Merge_WithFilesInSubdirectories_MergesDirectories()
+        {
+            var embeddedDirectory = EmbeddedDirectory.Merge(typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly);
+
+            Assert.Equal(
+                new[]
+                {
+                    "EmbeddedResources1",
+                    "EmbeddedResourceSubdirectory",
+                    "EmbeddedResources2",
+                    "EmbeddedResources3"
                 },
                 embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
             );

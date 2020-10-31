@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace EmbeddedResourceBrowser
 {
@@ -15,12 +14,84 @@ namespace EmbeddedResourceBrowser
     {
         private static readonly NamedReadOnlyList<EmbeddedFile> _emptyEmbeddedFilesList = new NamedReadOnlyList<EmbeddedFile>(Enumerable.Empty<EmbeddedFile>(), file => file.Name);
 
+        /// <summary>Creates an <see cref="EmbeddedDirectory"/> containing the resources from all provided <paramref name="assemblies"/> using a merge strategy.</summary>
+        /// <param name="assemblies">The <see cref="Assembly"/> objects from where to map embedded resources.</param>
+        /// <returns>
+        /// Returns an <see cref="EmbeddedDirectory"/> containing the merged resources from all provided <paramref name="assemblies"/>. If multiple resources have the
+        /// same name, then latest one is picked (regardless of assembly name).
+        /// </returns>
+        /// <example>
+        /// Given two assemblies with the following embedded resources:
+        /// <code>
+        /// Assembly1.directory1.resource-1.txt
+        /// Assembly1.directory1.resource-2.txt
+        /// Assembly1.directory2.resource-3.txt
+        /// 
+        /// Assembly2.directory1.resource-2.txt
+        /// Assembly2.directory1.resource-3.txt
+        /// Assembly2.directory3.resource-3.txt
+        /// </code>
+        /// The result of this method will be an <see cref="EmbeddedDirectory"/> having the following structure:
+        /// <code>
+        /// /
+        ///     directory1/
+        ///         resource-1.txt (from Assembly1)
+        ///         resource-2.txt (from Assembly2, matching resources)
+        ///         resource-3.txt (from Assembly2)
+        ///     directory2/
+        ///         resource-3.txt (from Assembly1)
+        ///     directory3/
+        ///         resource-3.txt (from Assembly2)
+        /// </code>
+        /// The matching is done by ignoring the case of each directory and file.
+        /// </example>
+        public static EmbeddedDirectory Merge(IEnumerable<Assembly> assemblies)
+            => new EmbeddedDirectory(
+                assemblies
+                    .SelectMany(assembly => assembly.GetManifestResourceNames().Select(resourceName => new ResourcePair(assembly, resourceName)))
+                    .GroupBy(resourcePair => resourcePair.ResourceName, (resourceName, resourcePairs) => resourcePairs.Last(), StringComparer.OrdinalIgnoreCase)
+            );
+
+        /// <summary>Creates an <see cref="EmbeddedDirectory"/> containing the resources from all provided <paramref name="assemblies"/> using a merge strategy.</summary>
+        /// <param name="assemblies">The <see cref="Assembly"/> objects from where to map embedded resources.</param>
+        /// <returns>
+        /// Returns an <see cref="EmbeddedDirectory"/> containing the merged resources from all provided <paramref name="assemblies"/>. If multiple resources have the
+        /// same name, then latest one is picked (regardless of assembly name).
+        /// </returns>
+        /// <example>
+        /// Given two assemblies with the following embedded resources:
+        /// <code>
+        /// Assembly1.directory1.resource-1.txt
+        /// Assembly1.directory1.resource-2.txt
+        /// Assembly1.directory2.resource-3.txt
+        /// 
+        /// Assembly2.directory1.resource-2.txt
+        /// Assembly2.directory1.resource-3.txt
+        /// Assembly2.directory3.resource-3.txt
+        /// </code>
+        /// The result of this method will be an <see cref="EmbeddedDirectory"/> having the following structure:
+        /// <code>
+        /// /
+        ///     directory1/
+        ///         resource-1.txt (from Assembly1)
+        ///         resource-2.txt (from Assembly2, matching resources)
+        ///         resource-3.txt (from Assembly2)
+        ///     directory2/
+        ///         resource-3.txt (from Assembly1)
+        ///     directory3/
+        ///         resource-3.txt (from Assembly2)
+        /// </code>
+        /// The matching is done by ignoring the case of each directory and file.
+        /// </example>
+        public static EmbeddedDirectory Merge(params Assembly[] assemblies)
+            => Merge((IEnumerable<Assembly>)assemblies);
+
         /// <summary>Initializes a new instance of the <see cref="EmbeddedDirectory"/> class.</summary>
         /// <param name="assembly">The <see cref="Assembly"/> from where to map embedded resources.</param>
         /// <exception cref="ArgumentNullException">Thrown when the provided <paramref name="assembly"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown when multiple files have the same case-insensitive name, but different case-sensitive names.</exception>
         public EmbeddedDirectory(Assembly assembly)
-            : this(null, null, assembly is null ? throw new ArgumentNullException(nameof(assembly)) : assembly.GetName().Name, assembly)
+            : this(null, string.Empty, assembly ?? throw new ArgumentNullException(nameof(assembly)))
         {
         }
 
@@ -41,7 +112,7 @@ namespace EmbeddedResourceBrowser
                 assemblies
                     .Select(assembly => assembly is null
                         ? throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies))
-                        : new EmbeddedDirectory(this, null, assembly.GetName().Name, assembly)
+                        : new EmbeddedDirectory(this, assembly.GetName().Name, assembly)
                     ),
                 directory => directory.Name
             );
@@ -59,41 +130,36 @@ namespace EmbeddedResourceBrowser
         {
         }
 
-        internal EmbeddedDirectory(EmbeddedDirectory parentDirectory, string prefix, string name, Assembly assembly)
+        private EmbeddedDirectory(EmbeddedDirectory parentDirectory, string name, Assembly assembly)
+            : this(assembly.GetManifestResourceNames().Select(resourceFullName => new ResourcePair(assembly, resourceFullName)))
         {
-            Name = name;
             ParentDirectory = parentDirectory;
-            Subdirectories = _GetSubdirectories(this, prefix, name, assembly);
-            Files = _GetFiles(this, prefix, name, assembly);
+            Name = name;
         }
 
-        private static NamedReadOnlyList<EmbeddedDirectory> _GetSubdirectories(EmbeddedDirectory parentDirectory, string prefix, string name, Assembly assembly)
+        private EmbeddedDirectory(IEnumerable<ResourcePair> resourcePairs)
+            : this(null, string.Empty, resourcePairs, 0)
         {
-            var subdirectoryRegex = new Regex($@"^{prefix}{name}\.(?<subdirectoryName>[^\.]+)(\.[^\.]+){{2,}}$", RegexOptions.IgnoreCase);
-            var subdirectoriesPrefix = $"{prefix}{name}.";
-            return new NamedReadOnlyList<EmbeddedDirectory>(
-                assembly
-                    .GetManifestResourceNames()
-                    .Select(new Func<string, Match>(subdirectoryRegex.Match))
-                    .Where(match => match.Success)
+        }
+
+        private EmbeddedDirectory(EmbeddedDirectory parentDirectory, string name, IEnumerable<ResourcePair> resourcePairs, int skipCount)
+        {
+            ParentDirectory = parentDirectory;
+            Name = name;
+            Subdirectories = new NamedReadOnlyList<EmbeddedDirectory>(
+                resourcePairs
+                    .Where(resourcePair => resourcePair.DirectoryPath.Skip(skipCount).Any())
                     .GroupBy(
-                        match => match.Groups["subdirectoryName"].Value,
-                        (subdirectoryName, matches) => new EmbeddedDirectory(parentDirectory, subdirectoriesPrefix, subdirectoryName, assembly),
+                        resourcePair => resourcePair.DirectoryPath.Skip(skipCount).First(),
+                        (subdirectoryName, subdirectoryFilePairs) => new EmbeddedDirectory(this, subdirectoryName, subdirectoryFilePairs, skipCount + 1),
                         StringComparer.OrdinalIgnoreCase
                     ),
-                directory => directory.Name
+                direcotry => direcotry.Name
             );
-        }
-
-        private static NamedReadOnlyList<EmbeddedFile> _GetFiles(EmbeddedDirectory parentDirectory, string prefix, string name, Assembly assembly)
-        {
-            var filesRegex = new Regex($@"^{prefix}{name}\.(?<fileName>[^\.]+\.[^\.]+)$", RegexOptions.IgnoreCase);
-            return new NamedReadOnlyList<EmbeddedFile>(
-                assembly
-                    .GetManifestResourceNames()
-                    .Select(new Func<string, Match>(filesRegex.Match))
-                    .Where(match => match.Success)
-                    .Select(match => new EmbeddedFile(parentDirectory, match.Groups["fileName"].Value, assembly, match.Value)),
+            Files = new NamedReadOnlyList<EmbeddedFile>(
+                resourcePairs
+                    .Where(resourcePair => !resourcePair.DirectoryPath.Skip(skipCount).Any())
+                    .Select(resourcePair => resourcePair.ToEmbeddedFile(this)),
                 file => file.Name
             );
         }
@@ -114,7 +180,9 @@ namespace EmbeddedResourceBrowser
         /// <returns>Returns a collection containing all subdirectories from the current embedded directory tree.</returns>
         public IEnumerable<EmbeddedDirectory> GetAllSubdirectories()
         {
-            var subdirectoriesToVisit = new Stack<EmbeddedDirectory>(Subdirectories);
+            var subdirectoriesToVisit = new Stack<EmbeddedDirectory>();
+            for (var subdirectoryIndex = Subdirectories.Count - 1; subdirectoryIndex >= 0; subdirectoryIndex--)
+                subdirectoriesToVisit.Push(Subdirectories[subdirectoryIndex]);
 
             while (subdirectoriesToVisit.Count > 0)
             {
@@ -130,5 +198,29 @@ namespace EmbeddedResourceBrowser
         /// <returns>Returns a collection containing all files in the current embedded directory tree.</returns>
         public IEnumerable<EmbeddedFile> GetAllFiles()
             => Files.Concat(GetAllSubdirectories().SelectMany(directory => directory.Files));
+
+        private struct ResourcePair
+        {
+            private readonly Assembly _assembly;
+            private readonly string _resourceFullName;
+
+            public ResourcePair(Assembly assembly, string resourceFullName)
+            {
+                _assembly = assembly;
+                _resourceFullName = resourceFullName;
+                ResourceName = resourceFullName.Substring(assembly.GetName().Name.Length + 1);
+                DirectoryPath = ResourceName.Split(new[] { '.' }).Take(ResourceName.Count(@char => @char == '.') - 1).ToArray();
+            }
+
+            public string ResourceName { get; }
+
+            public IReadOnlyList<string> DirectoryPath { get; }
+
+            public EmbeddedFile ToEmbeddedFile(EmbeddedDirectory parentDirectory)
+                => new EmbeddedFile(parentDirectory, ResourceName.Substring(_GetFileNameSeparatorIndex(ResourceName) + 1), _assembly, _resourceFullName);
+
+            private static int _GetFileNameSeparatorIndex(string resourceName)
+                => resourceName.LastIndexOf('.', resourceName.LastIndexOf('.') - 1);
+        }
     }
 }

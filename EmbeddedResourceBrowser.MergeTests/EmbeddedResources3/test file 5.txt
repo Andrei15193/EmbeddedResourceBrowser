@@ -1,0 +1,1 @@
+This is a fifth text file, just for testing the merge scenario.

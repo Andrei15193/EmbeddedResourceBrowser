@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\EmbeddedResourceBrowser\EmbeddedResourceBrowser.csproj" />
+    <ProjectReference Include="..\EmbeddedResourceBrowser.MergeTests\EmbeddedResourceBrowser.MergeTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

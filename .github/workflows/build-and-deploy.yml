@@ -18,6 +18,8 @@ jobs:
       shell: pwsh
       run: |
         git fetch origin gh-pages
+        git config user.name "$(git log -1 --pretty=format:'%an')"
+        git config user.email "$(git log -1 --pretty=format:'%ae')"
         git rebase origin/gh-pages
 
     - name: Generate Package Info

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using EmbeddedResourceBrowser.MergeTests;
@@ -180,6 +181,60 @@ namespace EmbeddedResourceBrowser.Tests
                     "EmbeddedResources3"
                 },
                 embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
+            );
+        }
+
+        [Fact]
+        public void Merge_WithFilesInSubdirectories_MergesFiles()
+        {
+            var embeddedDirectory = EmbeddedDirectory.Merge(typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly);
+
+            Assert.Equal(
+                new[]
+                {
+                    new
+                    {
+                        Name = "test file 1.txt",
+                        Content = "This is a text file. The content is overridden, just for testing the merge feature."
+                    },
+                    new
+                    {
+                        Name = "test file 2-1.txt",
+                        Content = "This text file does not override any content, just for testing the merge feature."
+                    },
+                    new
+                    {
+                        Name = "test file 2.txt",
+                        Content = "This is a second text file, just for testing."
+                    },
+                    new
+                    {
+                        Name = "test file 3.txt",
+                        Content = "This is a third text file, just for testing."
+                    },
+                    new
+                    {
+                        Name = "test file 4.txt",
+                        Content = "This is a fourth text file, just for testing."
+                    },
+                    new
+                    {
+                        Name = "test file 5.txt",
+                        Content = "This is a fifth text file, just for testing the merge scenario."
+                    }
+                },
+                embeddedDirectory
+                    .GetAllFiles()
+                    .Select(file =>
+                    {
+                        using var streamReader = new StreamReader(file.OpenRead());
+
+                        return new
+                        {
+                            file.Name,
+                            Content = streamReader.ReadToEnd()
+                        };
+                    })
             );
         }
     }

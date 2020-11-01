@@ -45,6 +45,25 @@
 
 
 
+<h3>Constants</h3>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Access Modifier</th>
+            <th class="w-75">Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.DefaultDirectoryPathSeparator.html">DefaultDirectoryPathSeparator</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>The default char separator used for directory paths.
+</p>
+</td>
+        </tr>
+    </tbody>
+</table>
 <h3>Constructors</h3>
 <table class="table table-hover">
     <thead>
@@ -76,6 +95,20 @@
 </p>
 </td>
         </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.EmbeddedDirectory-3.html">EmbeddedDirectory(Assembly, Char)</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Initializes a new instance of the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> class.
+</p>
+</td>
+        </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.EmbeddedDirectory-4.html">EmbeddedDirectory(IEnumerable&lt;Assembly&gt;, Char)</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Initializes a new instance of the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> class.
+</p>
+</td>
+        </tr>
     </tbody>
 </table>
 <h3>Properties</h3>
@@ -91,7 +124,7 @@
         <tr>
             <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.Files.html">Files</a></td>
             <td class="text-left text-nowrap"><code>public get</code></td>
-            <td><p>Gets the list of embedded files.
+            <td><p>Gets the list of the embedded files.
 </p>
 </td>
         </tr>
@@ -112,7 +145,7 @@
         <tr>
             <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.Subdirectories.html">Subdirectories</a></td>
             <td class="text-left text-nowrap"><code>public get</code></td>
-            <td><p>Gets the list of embedded subdirectories.
+            <td><p>Gets the list of the embedded subdirectories.
 </p>
 </td>
         </tr>
@@ -131,7 +164,35 @@
         <tr>
             <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.GetAllFiles.html">GetAllFiles()</a></td>
             <td class="text-left text-nowrap"><code>public</code></td>
-            <td><p>Gets all files from the current embedded directory and all embedded subdirectories.
+            <td><p>Gets all files from the current embedded directory and all embedded subdirectories, from all levels.
+</p>
+</td>
+        </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.GetAllSubdirectories.html">GetAllSubdirectories()</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Gets all subdirectires, from all levels, from the current embedded directory.
+</p>
+</td>
+        </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge.html">Merge(IEnumerable&lt;Assembly&gt;)</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Creates an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> containing the resources from all provided <em>assemblies</em> using a merge strategy.
+</p>
+</td>
+        </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge-2.html">Merge(Assembly[])</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Creates an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> containing the resources from all provided <em>assemblies</em> using a merge strategy.
+</p>
+</td>
+        </tr>
+        <tr>
+            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge-3.html">Merge(IEnumerable&lt;Assembly&gt;, Char)</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Creates an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> containing the resources from all provided <em>assemblies</em> using a merge strategy.
 </p>
 </td>
         </tr>

@@ -19,8 +19,7 @@ namespace EmbeddedResourceBrowser.Tests
                 {
                     embeddedDirectory.Subdirectories["EmbeddedResources1"].CopyTo(directoryInfo);
 
-                    Assert.Equal(new[] { "test file 1.txt", "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
-                    Assert.Equal("This is a text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 1.txt")));
+                    Assert.Equal(new[] { "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
                     Assert.Equal("This is a second text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 2.txt")));
                     Assert.Empty(directoryInfo.GetDirectories());
                 }
@@ -37,8 +36,7 @@ namespace EmbeddedResourceBrowser.Tests
                 {
                     await embeddedDirectory.Subdirectories["EmbeddedResources1"].CopyToAsync(directoryInfo);
 
-                    Assert.Equal(new[] { "test file 1.txt", "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
-                    Assert.Equal("This is a text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 1.txt")));
+                    Assert.Equal(new[] { "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
                     Assert.Equal("This is a second text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 2.txt")));
                     Assert.Empty(directoryInfo.GetDirectories());
                 }
@@ -55,8 +53,7 @@ namespace EmbeddedResourceBrowser.Tests
                 {
                     embeddedDirectory.Subdirectories["EmbeddedResources1"].CopyToRecursively(directoryInfo);
 
-                    Assert.Equal(new[] { "test file 1.txt", "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
-                    Assert.Equal("This is a text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 1.txt")));
+                    Assert.Equal(new[] { "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
                     Assert.Equal("This is a second text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 2.txt")));
 
                     var embeddedResourceSubdirectory = Assert.Single(directoryInfo.GetDirectories(), directory => directory.Name == "EmbeddedResourceSubdirectory");
@@ -77,8 +74,7 @@ namespace EmbeddedResourceBrowser.Tests
                 {
                     await embeddedDirectory.Subdirectories["EmbeddedResources1"].CopyToRecursivelyAsync(directoryInfo);
 
-                    Assert.Equal(new[] { "test file 1.txt", "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
-                    Assert.Equal("This is a text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 1.txt")));
+                    Assert.Equal(new[] { "test file 2.txt" }, directoryInfo.GetFiles().Select(file => file.Name));
                     Assert.Equal("This is a second text file, just for testing.", File.ReadAllText(Path.Combine(directoryInfo.FullName, "test file 2.txt")));
 
                     var embeddedResourceSubdirectory = Assert.Single(directoryInfo.GetDirectories(), directory => directory.Name == "EmbeddedResourceSubdirectory");

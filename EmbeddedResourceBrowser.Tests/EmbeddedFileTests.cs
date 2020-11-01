@@ -10,11 +10,10 @@ namespace EmbeddedResourceBrowser.Tests
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
-            var embeddedResources1Directory = assemblyDirectory.Subdirectories["EmbeddedResources1"];
-            var testFile1 = embeddedResources1Directory.Files["test file 1.txt"];
-            Assert.Equal("test file 1.txt", testFile1.Name);
+            var testFile1 = assemblyDirectory.Files["EmbeddedResources1/test file 1.txt"];
+            Assert.Equal("EmbeddedResources1/test file 1.txt", testFile1.Name);
             Assert.Equal(".txt", testFile1.Extension);
-            Assert.Same(embeddedResources1Directory, testFile1.ParentDirectory);
+            Assert.Same(assemblyDirectory, testFile1.ParentDirectory);
         }
 
         [Fact]
@@ -22,8 +21,7 @@ namespace EmbeddedResourceBrowser.Tests
         {
             var assemblyDirectory = new EmbeddedDirectory(typeof(EmbeddedFileTests).Assembly);
 
-            var embeddedResources1Directory = assemblyDirectory.Subdirectories["EmbeddedResources1"];
-            var testFile1 = embeddedResources1Directory.Files["test file 1.txt"];
+            var testFile1 = assemblyDirectory.Files["EmbeddedResources1/test file 1.txt"];
 
             using (var streamReader = new StreamReader(testFile1.OpenRead()))
                 Assert.Equal("This is a text file, just for testing.", streamReader.ReadToEnd());

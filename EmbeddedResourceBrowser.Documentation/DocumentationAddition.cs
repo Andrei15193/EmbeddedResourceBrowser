@@ -30,7 +30,7 @@ namespace EmbeddedResourceBrowser.Documentation
                 Paragraph(
                     Text("The library is rather small and provides a directory-like structure for browsing embedded resources. You can load resources in multiple ways depending on how you wish to use them in your application. Before detailing each approach it is important to note that embedded resources in .NET assemblies use the "),
                     InlineCode("."),
-                    Text(" character as a delimiter for directories. This can be a bit confusing because we can add the "),
+                    Text(" character as a separator for directories. This can be a bit confusing because we can add the "),
                     InlineCode("."),
                     Text(" in the name of a directory or a file and there will be absolutely no difference of having a directory structure or using "),
                     InlineCode("."),
@@ -48,7 +48,7 @@ Assembly.Directory.embedded file.txt
                 Paragraph(
                     Text("If you wish, you can provide a custom logical name for your embedded resource, keep in mind that you need to specify this manually. For instance, you can use "),
                     InlineCode("/"),
-                    Text(" as a separator by specifying the logical name of an embedded resource. For more information refer to:"),
+                    Text(" as a separator by specifying the logical name of an embedded resource. For more information refer to: "),
                     Hyperlink("https://docs.microsoft.com/visualstudio/msbuild/common-msbuild-project-items?view=vs-2019#embeddedresource", "Common MSBuild project items - EmbeddedResource"),
                     Text(".")
                 ),
@@ -56,7 +56,7 @@ Assembly.Directory.embedded file.txt
                 Paragraph(
                     Text("Implicitly, the library uses the "),
                     InlineCode("."),
-                    Text(" character as a delimiter for directories in the remained of the name. The remained of the name is determined by removing the assembly name from the beginning of the embedded resource name (which can contain "),
+                    Text(" character as a separator for directories in the remained of the name. The remained of the name is determined by removing the assembly name from the beginning of the embedded resource name (which can contain "),
                     InlineCode("."),
                     Text(" characters because the assembly name is available through the assembly object from which resources are being loaded) and removing the file name which contains exactly one "),
                     InlineCode("."),
@@ -68,7 +68,7 @@ Assembly.Directory.embedded file.txt
                     InlineCode("My.Assembly.Name"),
                     Text(" and the file name is "),
                     InlineCode("File.Extension"),
-                    Text(". The default delimiter for splitting the directory path from the remained is "),
+                    Text(". The default separator for splitting the directory path from the remained is "),
                     InlineCode("."),
                     Text(" leading to the following structure: "),
                     InlineCode("My.Assembly.Name/One/Two/Three/File.Extension"),

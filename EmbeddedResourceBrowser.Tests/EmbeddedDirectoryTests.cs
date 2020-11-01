@@ -97,13 +97,13 @@ namespace EmbeddedResourceBrowser.Tests
 
             var assemblyDirectory = Assert.Single(embeddedDirectory.Subdirectories);
             Assert.Equal("EmbeddedResourceBrowser.Tests", assemblyDirectory.Name);
-            Assert.Empty(assemblyDirectory.Files);
+            Assert.Single(assemblyDirectory.Files);
+            Assert.Equal("EmbeddedResources1/test file 1.txt", assemblyDirectory.Files[0].Name);
 
             var embeddedResources1Directory = assemblyDirectory.Subdirectories.ElementAt(0);
             Assert.Equal("EmbeddedResources1", embeddedResources1Directory.Name);
-            Assert.Equal(2, embeddedResources1Directory.Files.Count);
-            Assert.Equal("test file 1.txt", embeddedResources1Directory.Files[0].Name);
-            Assert.Equal("test file 2.txt", embeddedResources1Directory.Files[1].Name);
+            Assert.Single(embeddedResources1Directory.Files);
+            Assert.Equal("test file 2.txt", embeddedResources1Directory.Files[0].Name);
 
             var embeddedResourceSubdirectoryDirectory = Assert.Single(embeddedResources1Directory.Subdirectories);
             Assert.Equal("EmbeddedResourceSubdirectory", embeddedResourceSubdirectoryDirectory.Name);
@@ -124,7 +124,7 @@ namespace EmbeddedResourceBrowser.Tests
             Assert.Equal(
                 new[]
                 {
-                    "test file 1.txt",
+                    "EmbeddedResources1/test file 1.txt",
                     "test file 2.txt",
                     "test file 3.txt",
                     "test file 4.txt"
@@ -194,7 +194,7 @@ namespace EmbeddedResourceBrowser.Tests
                 {
                     new
                     {
-                        Name = "test file 1.txt",
+                        Name = "EmbeddedResources1/test file 1.txt",
                         Content = "This is a text file. The content is overridden, just for testing the merge feature."
                     },
                     new
@@ -235,6 +235,31 @@ namespace EmbeddedResourceBrowser.Tests
                             Content = streamReader.ReadToEnd()
                         };
                     })
+            );
+        }
+
+        [Fact]
+        public void EmbeddedDirectory_WhenCreatedWithDifferentSeparator_MapsTheStructureAccordingToIt()
+        {
+            var embeddedDirectory = new EmbeddedDirectory(typeof(EmbeddedDirectoryTests).Assembly, '/');
+
+            Assert.Equal("EmbeddedResourceBrowser.Tests", embeddedDirectory.Name);
+            Assert.Equal(
+                new[]
+                {
+                    "EmbeddedResources1"
+                },
+                embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
+            );
+            Assert.Equal(
+                new[]
+                {
+                    "EmbeddedResources1.EmbeddedResourceSubdirectory.test file 3.txt",
+                    "EmbeddedResources1.test file 2.txt",
+                    "EmbeddedResources2.test file 4.txt",
+                    "test file 1.txt"
+                },
+                embeddedDirectory.GetAllFiles().Select(file => file.Name)
             );
         }
     }

@@ -9,7 +9,7 @@ To see the latest development (`dev` branch) go to https://andrei15193.github.io
 
 ----
 
-The library is rather small and provides a directory-like structure for browsing embedded resources. You can load resources in multiple ways depending on how you wish to use them in your application. Before detailing each approach it is important to note that embedded resources in .NET assemblies use the `.` character as a delimiter for directories. This can be a bit confusing because we can add the `.` in the name of a directory or a file and there will be absolutely no difference of having a directory structure or
+The library is rather small and provides a directory-like structure for browsing embedded resources. You can load resources in multiple ways depending on how you wish to use them in your application. Before detailing each approach it is important to note that embedded resources in .NET assemblies use the `.` character as a separator for directories. This can be a bit confusing because we can add the `.` in the name of a directory or a file and there will be absolutely no difference of having a directory structure or
 using `.` in the name. For instance the following two resources are identical and the compiler will issue an error indicating this.
 
 ```
@@ -28,7 +28,7 @@ If you wish, you can provide a custom logical name for your embedded resource, k
 <EmbeddedResource Include="Directory.embedded file.txt" LogicalName="Directory/embedded file.txt"/>
 ```
 
-Implicitly, the library uses the `.` character as a delimiter for directories in the remained of the name. The remained of the name is determined by removing the assembly name from the beginning of the embedded resource name (which can contain `.` characters because the assembly name is available through the assembly object from which resources are being loaded) and removing the file name which contains exactly one `.` character which delimits the extension. For instance, the following resource `My.Assembly.Name.One.Two.Three.File.Extension` has the `One.Two.Three` name remained because the assembly name is `My.Assembly.Name` and the file name is `File.Extension`. The default delimiter for splitting the directory path from the remained is `.` leading to the following structure: `My.Assembly.Name/One/Two/Three/File.Extension`.
+Implicitly, the library uses the `.` character as a separator for directories in the remained of the name. The remained of the name is determined by removing the assembly name from the beginning of the embedded resource name (which can contain `.` characters because the assembly name is available through the assembly object from which resources are being loaded) and removing the file name which contains exactly one `.` character which delimits the extension. For instance, the following resource `My.Assembly.Name.One.Two.Three.File.Extension` has the `One.Two.Three` name remained because the assembly name is `My.Assembly.Name` and the file name is `File.Extension`. The default separator for splitting the directory path from the remained is `.` leading to the following structure: `My.Assembly.Name/One/Two/Three/File.Extension`.
 
 ### Working With One Assembly
 

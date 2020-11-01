@@ -10,7 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/EmbeddedResourceBrowser.Documentation/bin/Debug/netcoreapp3.1/EmbeddedResourceBrowser.Documentation.dll",
-            "args": [],
+            "args": [
+                "."
+            ],
             "cwd": "${workspaceFolder}/EmbeddedResourceBrowser.Documentation/bin",
             "console": "internalConsole",
             "stopAtEntry": false

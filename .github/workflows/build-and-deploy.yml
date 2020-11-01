@@ -17,9 +17,9 @@ jobs:
     - name: Copy Project Site for Updates
       shell: pwsh
       run: |
-        git fetch origin gh-pages
         git config user.name "$(git log -1 --pretty=format:'%an')"
         git config user.email "$(git log -1 --pretty=format:'%ae')"
+        git fetch origin gh-pages
         git rebase origin/gh-pages
 
     - name: Generate Package Info
@@ -133,6 +133,7 @@ jobs:
         dotnet build `
           --configuration Release `
           --no-restore `
+          -property:Version=${{ steps.package_info.outputs.assembly_version }} `
           -property:SignAssembly=True `
           -property:AssemblyOriginatorKeyFile=../EmbeddedResourceBrowser.snk `
           -property:DisableStrongNamer=False
@@ -142,7 +143,7 @@ jobs:
       run: |
         dotnet test `
           --configuration Release `
-          --no-restore `
+          --no-build `
           --verbosity normal
 
     - name: Pack
@@ -152,12 +153,9 @@ jobs:
         dotnet pack `
           --configuration Release `
           --output publish `
-          -property:Version=${{ steps.package_info.outputs.assembly_version }} `
+          --no-build `
           -property:PackageVersion=${{ steps.package_info.outputs.package_version }} `
-          -property:RepositoryCommit=$env:GITHUB_SHA `
-          -property:SignAssembly=True `
-          -property:AssemblyOriginatorKeyFile=../EmbeddedResourceBrowser.snk `
-          -property:DisableStrongNamer=False
+          -property:RepositoryCommit=$env:GITHUB_SHA
 
     - name: Create Release
       uses: actions/create-release@v1
@@ -194,7 +192,7 @@ jobs:
         {
           $projectDirectoryPath += $env:GITHUB_REF.Substring("refs/heads".Length)
         }
-        dotnet run --project ./EmbeddedResourceBrowser.Documentation --configuration Release -- $projectDirectoryPath
+        dotnet ./EmbeddedResourceBrowser.Documentation/bin/Release/netcoreapp3.1/EmbeddedResourceBrowser.Documentation.dll $projectDirectoryPath
 
     - name: Publish Project Site
       uses: peaceiris/actions-gh-pages@v3

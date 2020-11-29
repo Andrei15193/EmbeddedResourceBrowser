@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EmbeddedResourceBrowser.Documentation": {
+      "commandName": "Project",
+      "commandLineArgs": "dev"
+    }
+  }
+}

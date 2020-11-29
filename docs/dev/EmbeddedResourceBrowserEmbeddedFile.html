@@ -5,7 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>EmbeddedResourceBrowser - EmbeddedResourceBrowser Namepsace</title>
+    <title>EmbeddedResourceBrowser - EmbeddedFile Class</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
@@ -30,49 +30,75 @@
 <li class="breadcrumb-item" aria-current="page">
     <a href="index.html">EmbeddedResourceBrowser</a>
 </li>
-        <li class="breadcrumb-item active" aria-current="page">EmbeddedResourceBrowser</li>
+        <li class="breadcrumb-item active" aria-current="page">EmbeddedFile</li>
     </ol>
 </nav>
 
-<h2>EmbeddedResourceBrowser Namespace</h2>
+<h2>EmbeddedFile Class</h2>
+
+<p>Represents an embedded file.
+</p>
+
+<p>
+    Base type: <a href="https://docs.microsoft.com/dotnet/api/System.Object?view=netstandard-1.6">object</a>.
+</p>
 
 
 
-<h3>Classes</h3>
+<h3>Properties</h3>
 <table class="table table-hover">
     <thead>
         <tr>
             <th>Name</th>
+            <th>Access Modifier</th>
             <th class="w-75">Summary</th>
         </tr>
     </thead>
     <tbody>
         <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a></td>
-            <td><p>Represents a directory of embedded resources.
+            <td><a href="EmbeddedResourceBrowserEmbeddedFile.Extension.html">Extension</a></td>
+            <td class="text-left text-nowrap"><code>public get</code></td>
+            <td><p>Gets the extension of the file.
 </p>
 </td>
         </tr>
         <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a></td>
-            <td><p>Represents an embedded file.
+            <td><a href="EmbeddedResourceBrowserEmbeddedFile.Name.html">Name</a></td>
+            <td class="text-left text-nowrap"><code>public get</code></td>
+            <td><p>Gets the name of the embedded file.
 </p>
 </td>
         </tr>
         <tr>
-            <td><a href="EmbeddedResourceBrowserFileSystemInfoExtensions.html">FileSystemInfoExtensions</a></td>
-            <td><p>Exposes extension methods for <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> and <a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a> objects for usage with <a href="https://docs.microsoft.com/dotnet/api/System.IO.DirectoryInfo?view=netstandard-1.6">DirectoryInfo</a> and <a href="https://docs.microsoft.com/dotnet/api/System.IO.FileInfo?view=netstandard-1.6">FileInfo</a>.
-</p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserNamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a></td>
-            <td><p>An <a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IReadOnlyList-1?view=netstandard-1.6">IReadOnlyList</a>&lt;T&gt; containing elements that can be accessed by their name.
+            <td><a href="EmbeddedResourceBrowserEmbeddedFile.ParentDirectory.html">ParentDirectory</a></td>
+            <td class="text-left text-nowrap"><code>public get</code></td>
+            <td><p>Gets the <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> to which this file belongs to.
 </p>
 </td>
         </tr>
     </tbody>
 </table>
+<h3>Methods</h3>
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Access Modifier</th>
+            <th class="w-75">Summary</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><a href="EmbeddedResourceBrowserEmbeddedFile.OpenRead(-BCD8B0C2EB1FCE714EAB6CEF0D771ACC.html">OpenRead()</a></td>
+            <td class="text-left text-nowrap"><code>public</code></td>
+            <td><p>Gets a <a href="https://docs.microsoft.com/dotnet/api/System.IO.Stream?view=netstandard-1.6">Stream</a> for reading the contents of the embedded file.
+</p>
+</td>
+        </tr>
+    </tbody>
+</table>
+
+
 
 
 

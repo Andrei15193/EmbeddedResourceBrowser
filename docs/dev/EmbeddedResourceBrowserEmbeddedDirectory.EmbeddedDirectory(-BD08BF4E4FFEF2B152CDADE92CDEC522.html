@@ -5,7 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>EmbeddedResourceBrowser - EmbeddedResourceBrowser Namepsace</title>
+    <title>EmbeddedResourceBrowser - EmbeddedDirectory Constructor</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
@@ -27,52 +27,46 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
 
+
 <li class="breadcrumb-item" aria-current="page">
     <a href="index.html">EmbeddedResourceBrowser</a>
 </li>
-        <li class="breadcrumb-item active" aria-current="page">EmbeddedResourceBrowser</li>
+<li class="breadcrumb-item" aria-current="page">
+    <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a>
+</li>
+        <li class="breadcrumb-item active" aria-current="page">EmbeddedDirectory</li>
     </ol>
 </nav>
 
-<h2>EmbeddedResourceBrowser Namespace</h2>
+<h2>EmbeddedDirectory Constructor</h2>
 
+<p>Initializes a new instance of the <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> class.
+</p>
 
+<p>This is a <code>public</code> constructor.</p>
 
-<h3>Classes</h3>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th class="w-75">Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a></td>
-            <td><p>Represents a directory of embedded resources.
+<h3>Parameters</h3>
+<ul>
+    <li>
+        <h5>assemblies: <a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;</h5>
+<p>The <a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a> objects from where to map embedded resources.
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a></td>
-            <td><p>Represents an embedded file.
+    </li>
+    <li>
+        <h5>directoryPathSeparator: <a href="https://docs.microsoft.com/dotnet/api/System.Char?view=netstandard-1.6">char</a></h5>
+<p>The character separator to use for directory paths, the default is <a href="EmbeddedResourceBrowserEmbeddedDirectory.DefaultDirectoryPathSeparator.html">DefaultDirectoryPathSeparator</a> (<code>.</code>).
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserFileSystemInfoExtensions.html">FileSystemInfoExtensions</a></td>
-            <td><p>Exposes extension methods for <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> and <a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a> objects for usage with <a href="https://docs.microsoft.com/dotnet/api/System.IO.DirectoryInfo?view=netstandard-1.6">DirectoryInfo</a> and <a href="https://docs.microsoft.com/dotnet/api/System.IO.FileInfo?view=netstandard-1.6">FileInfo</a>.
+    </li>
+</ul>
+
+<h3>Exceptions</h3>
+<ul>
+    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.ArgumentException?view=netstandard-1.6">ArgumentException</a></h5>
+<p>Thrown when the provided <em>assemblies</em> are <code>null</code> or contains <code>null</code> values.
+</p><p>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserNamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a></td>
-            <td><p>An <a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IReadOnlyList-1?view=netstandard-1.6">IReadOnlyList</a>&lt;T&gt; containing elements that can be accessed by their name.
-</p>
-</td>
-        </tr>
-    </tbody>
-</table>
+</li>
+</ul>
 
 
 

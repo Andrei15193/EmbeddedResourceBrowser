@@ -5,7 +5,7 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
-    <title>EmbeddedResourceBrowser - EmbeddedResourceBrowser Namepsace</title>
+    <title>EmbeddedResourceBrowser - TryGetValue Method</title>
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
@@ -27,52 +27,50 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
 
+
 <li class="breadcrumb-item" aria-current="page">
     <a href="index.html">EmbeddedResourceBrowser</a>
 </li>
-        <li class="breadcrumb-item active" aria-current="page">EmbeddedResourceBrowser</li>
+<li class="breadcrumb-item" aria-current="page">
+    <a href="EmbeddedResourceBrowserNamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a>
+</li>
+        <li class="breadcrumb-item active" aria-current="page">TryGetValue</li>
     </ol>
 </nav>
 
-<h2>EmbeddedResourceBrowser Namespace</h2>
+<h2>TryGetValue Method</h2>
+
+<p>Gets the item having the specified <em>name</em>.
+</p>
 
 
+<p>This is a <code>public</code> method.</p>
 
-<h3>Classes</h3>
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th class="w-75">Summary</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a></td>
-            <td><p>Represents a directory of embedded resources.
+
+<h3>Parameters</h3>
+<ul>
+    <li>
+        <h5>name: <a href="https://docs.microsoft.com/dotnet/api/System.String?view=netstandard-1.6">string</a></h5>
+<p>The name of the item to retrieve.
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a></td>
-            <td><p>Represents an embedded file.
+    </li>
+    <li>
+        <h5>value: T</h5>
+<p>The retrieved item, if found; otherwise <code>default(T)</code> is returned.
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserFileSystemInfoExtensions.html">FileSystemInfoExtensions</a></td>
-            <td><p>Exposes extension methods for <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> and <a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a> objects for usage with <a href="https://docs.microsoft.com/dotnet/api/System.IO.DirectoryInfo?view=netstandard-1.6">DirectoryInfo</a> and <a href="https://docs.microsoft.com/dotnet/api/System.IO.FileInfo?view=netstandard-1.6">FileInfo</a>.
+    </li>
+</ul>
+
+<h3>Returns: <a href="https://docs.microsoft.com/dotnet/api/System.Boolean?view=netstandard-1.6">bool</a></h3>
+<p>If an item with the provided <em>name</em> exists, returns <code>true</code>; Otherwise <code>false</code>.
 </p>
-</td>
-        </tr>
-        <tr>
-            <td><a href="EmbeddedResourceBrowserNamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a></td>
-            <td><p>An <a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IReadOnlyList-1?view=netstandard-1.6">IReadOnlyList</a>&lt;T&gt; containing elements that can be accessed by their name.
+<h3>Exceptions</h3>
+<ul>
+    <li><h5><a href="https://docs.microsoft.com/dotnet/api/System.ArgumentNullException?view=netstandard-1.6">ArgumentNullException</a></h5>
+<p>Thrown when <em>name</em> is <code>null</code>
 </p>
-</td>
-        </tr>
-    </tbody>
-</table>
+</li>
+</ul>
 
 
 

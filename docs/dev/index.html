@@ -45,25 +45,25 @@
     </thead>
     <tbody>
         <tr>
-            <td><a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a></td>
+            <td><a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a></td>
             <td><p>Represents a directory of embedded resources.
 </p>
 </td>
         </tr>
         <tr>
-            <td><a href="EmbeddedResourceBrowser.EmbeddedFile.html">EmbeddedFile</a></td>
+            <td><a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a></td>
             <td><p>Represents an embedded file.
 </p>
 </td>
         </tr>
         <tr>
-            <td><a href="EmbeddedResourceBrowser.FileSystemInfoExtensions.html">FileSystemInfoExtensions</a></td>
-            <td><p>Exposes extension methods for <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> and <a href="EmbeddedResourceBrowser.EmbeddedFile.html">EmbeddedFile</a> objects for usage with <a href="https://docs.microsoft.com/dotnet/api/System.IO.DirectoryInfo?view=netstandard-1.6">DirectoryInfo</a> and <a href="https://docs.microsoft.com/dotnet/api/System.IO.FileInfo?view=netstandard-1.6">FileInfo</a>.
+            <td><a href="EmbeddedResourceBrowserFileSystemInfoExtensions.html">FileSystemInfoExtensions</a></td>
+            <td><p>Exposes extension methods for <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> and <a href="EmbeddedResourceBrowserEmbeddedFile.html">EmbeddedFile</a> objects for usage with <a href="https://docs.microsoft.com/dotnet/api/System.IO.DirectoryInfo?view=netstandard-1.6">DirectoryInfo</a> and <a href="https://docs.microsoft.com/dotnet/api/System.IO.FileInfo?view=netstandard-1.6">FileInfo</a>.
 </p>
 </td>
         </tr>
         <tr>
-            <td><a href="EmbeddedResourceBrowser.NamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a></td>
+            <td><a href="EmbeddedResourceBrowserNamedReadOnlyList`1.html">NamedReadOnlyList&lt;T&gt;</a></td>
             <td><p>An <a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IReadOnlyList-1?view=netstandard-1.6">IReadOnlyList</a>&lt;T&gt; containing elements that can be accessed by their name.
 </p>
 </td>
@@ -91,7 +91,7 @@ Assembly.Directory.embedded file.txt</pre></code>
 <h4>Working With One Assembly</h4>
 
 
-<p>Generally you may be working with just one assembly from where you load embedded resources. In this case initialize a new <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> by passing the assembly object containing the embedded resources to the constructor. This will load all resources in a directory tree where the root is the directory having the same name as the assembly name and all resources can be browsed, and loaded, from there. The following method will concatenate the contents of each embedded file at the top level of the assembly.
+<p>Generally you may be working with just one assembly from where you load embedded resources. In this case initialize a new <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> by passing the assembly object containing the embedded resources to the constructor. This will load all resources in a directory tree where the root is the directory having the same name as the assembly name and all resources can be browsed, and loaded, from there. The following method will concatenate the contents of each embedded file at the top level of the assembly.
 </p>
 <div class="highlight" ><pre style="; " ><span class="kt">string</span><span class=""> </span><span class="nf">ConcatResources</span><span class=""></span><span class="p">()</span><span class=""></span>
 <span class=""></span><span class="p">{</span><span class=""></span>
@@ -108,7 +108,7 @@ Assembly.Directory.embedded file.txt</pre></code>
 <h4>Working With Multiple Assemblies</h4>
 
 
-<p>Sometimes the project can be rather complex and embedded resources are placed in multiple assemblies. In this case an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> can be created by providing all assemblies as constructor arguments which in turn will create a root directory containing a subdirectory for each provided assembly that have the same structure at in the working with one assembly scenario. The following method will concatenate the contents of each embedded file at the top level of each assembly, but also append the assembly name from where files are being read.
+<p>Sometimes the project can be rather complex and embedded resources are placed in multiple assemblies. In this case an <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> can be created by providing all assemblies as constructor arguments which in turn will create a root directory containing a subdirectory for each provided assembly that have the same structure at in the working with one assembly scenario. The following method will concatenate the contents of each embedded file at the top level of each assembly, but also append the assembly name from where files are being read.
 </p>
 <div class="highlight" ><pre style="; " ><span class="kt">string</span><span class=""> </span><span class="nf">ConcatResources</span><span class=""></span><span class="p">()</span><span class=""></span>
 <span class=""></span><span class="p">{</span><span class=""></span>
@@ -127,14 +127,14 @@ Assembly.Directory.embedded file.txt</pre></code>
 <span class=""></span><span class="p">}</span>
 </pre></div>
 
-<p>This works well with pattern matching. To find different file or directory structures you can use the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.GetAllFiles.html">GetAllFiles</a>() and <a href="EmbeddedResourceBrowser.EmbeddedDirectory.GetAllSubdirectories.html">GetAllSubdirectories</a>() methods to get all files/directories and use <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/concepts/linq">LINQ</a> to match different structures.
+<p>This works well with pattern matching. To find different file or directory structures you can use the <a href="EmbeddedResourceBrowserEmbeddedDirectory.GetAllFiles(-BCD8B0C2EB1FCE714EAB6CEF0D771ACC.html">GetAllFiles</a>() and <a href="EmbeddedResourceBrowserEmbeddedDirectory.GetAllSubdirectories(-BCD8B0C2EB1FCE714EAB6CEF0D771ACC.html">GetAllSubdirectories</a>() methods to get all files/directories and use <a href="https://docs.microsoft.com/dotnet/csharp/programming-guide/concepts/linq">LINQ</a> to match different structures.
 </p>
 <h4>Working With Multiple Assemblies (Merge Method)</h4>
 
 
 <p>A different scenario when working with multiple assemblies is when we want to have resources that are placed in multiple assemblies, but instead of leading each of them we want to have a precedence between them, so even though we have multiple assemblies with embedded resources, we want to provide an implicit set that can be overriden in other assemblies. For instance, I would like to provide a default set of embedded resources that can be overridden by users of my library.
 </p>
-<p>Given the following structure of embedded directories, I can override any of these resources (or add) from a different assembly using the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method.
+<p>Given the following structure of embedded directories, I can override any of these resources (or add) from a different assembly using the <a href="EmbeddedResourceBrowserEmbeddedDirectory.Merge(-A0345635DD17F2939A06001708AD7DD3.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method.
 </p>
 <pre><code>MyAssembly/
     Directory1/
@@ -142,7 +142,7 @@ Assembly.Directory.embedded file.txt</pre></code>
         File 2.txt
     Directory2/
         File 1.txt</pre></code>
-<p>This would be the default set of resources, now, when loading mapping resources from multiple assemblies using the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method some of these resources can be overridden and a few more resources can be added to the set. Having a second assembly with the following structure will create an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> with resources from both assemblies.
+<p>This would be the default set of resources, now, when loading mapping resources from multiple assemblies using the <a href="EmbeddedResourceBrowserEmbeddedDirectory.Merge(-A0345635DD17F2939A06001708AD7DD3.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method some of these resources can be overridden and a few more resources can be added to the set. Having a second assembly with the following structure will create an <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> with resources from both assemblies.
 </p>
 <pre><code>OtherAssembly/
     Directory1/
@@ -161,7 +161,7 @@ Assembly.Directory.embedded file.txt</pre></code>
         File 1.txt (from MyAssembly)
     Directory3/
         File 1.txt (from OtherAssembly)</pre></code>
-<p>To create an <a href="EmbeddedResourceBrowser.EmbeddedDirectory.html">EmbeddedDirectory</a> using the <a href="EmbeddedResourceBrowser.EmbeddedDirectory.Merge.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method simply call the static method instead of calling the constructor.
+<p>To create an <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> using the <a href="EmbeddedResourceBrowserEmbeddedDirectory.Merge(-A0345635DD17F2939A06001708AD7DD3.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method simply call the static method instead of calling the constructor.
 </p>
 <div class="highlight" ><pre style="; " ><span class="kt">string</span><span class=""> </span><span class="nf">ConcatResources</span><span class=""></span><span class="p">()</span><span class=""></span>
 <span class=""></span><span class="p">{</span><span class=""></span>

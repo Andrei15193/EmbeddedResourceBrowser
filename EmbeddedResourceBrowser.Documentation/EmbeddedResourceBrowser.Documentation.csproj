@@ -14,7 +14,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Assets\Style.css" />
     <EmbeddedResource Include="Assets\favicon.ico" />
     <EmbeddedResource Include="Partials\Breadcrumbs.hbs" />
     <EmbeddedResource Include="Partials\Layout.hbs" />

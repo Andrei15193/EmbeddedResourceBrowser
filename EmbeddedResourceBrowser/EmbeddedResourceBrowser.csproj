@@ -8,6 +8,7 @@
     <Authors>Andrei15193</Authors>
     <Copyright>Andrei15193</Copyright>
     <PackageProjectUrl>https://Andrei15193.github.io/EmbeddedResourceBrowser</PackageProjectUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageIcon>logo.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
@@ -22,7 +23,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="../readme.md" Pack="true" PackagePath="" Visible="false" />
     <None Include="../LICENSE" Pack="true" PackagePath="" Visible="false" />
-    <None Include="../logo.png" Pack="true" PackagePath="" />
+    <None Include="../logo.png" Pack="true" PackagePath="" Visible="false" />
   </ItemGroup>
 </Project>

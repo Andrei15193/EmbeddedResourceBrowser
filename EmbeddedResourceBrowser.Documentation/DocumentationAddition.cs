@@ -54,9 +54,9 @@ Assembly.Directory.embedded file.txt
                 ),
                 CodeBlock("<EmbeddedResource Include=\"Directory.embedded file.txt\" LogicalName=\"AssemblyName/Directory/embedded file.txt\"/>", new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) { { "language", "xml" } }),
                 Paragraph(
-                    Text("The library detects the path separator from the embedded file name. It expects that embedded resource names start with the assembly name followed by the path separator. By default, this would mean the dot character ('"),
+                    Text("The library detects the path separator from the embedded file name. It expects that embedded resource names start with the assembly name followed by the path separator. By default, this would mean the dot character ("),
                     InlineCode("."),
-                    Text("'), however resources can be embedded under a different name using the "),
+                    Text("), however resources can be embedded under a different name using the "),
                     InlineCode("LogicalName"),
                     Text(" attribute. When using this option ensure that the assembly name is added at the beginning of the name and add the path separator after it.")
                 ),

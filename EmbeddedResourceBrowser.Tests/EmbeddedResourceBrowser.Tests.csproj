@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -18,15 +18,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\EmbeddedResourceBrowser\EmbeddedResourceBrowser.csproj" />
-    <ProjectReference Include="..\EmbeddedResourceBrowser.MergeTests\EmbeddedResourceBrowser.MergeTests.csproj" />
+    <ProjectReference Include="../EmbeddedResourceBrowser/EmbeddedResourceBrowser.csproj" />
+    <ProjectReference Include="../EmbeddedResourceBrowser.MergeTests/EmbeddedResourceBrowser.MergeTests.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="not detected test file.txt" LogicalName="not detected test file.txt" />
-    <EmbeddedResource Include="EmbeddedResources1\test file 1.txt" LogicalName="EmbeddedResourceBrowser.Tests.EmbeddedResources1/test file 1.txt" />
-    <EmbeddedResource Include="EmbeddedResources1\test file 2.txt" />
-    <EmbeddedResource Include="EmbeddedResources1\EmbeddedResourceSubdirectory\test file 3.txt" />
-    <EmbeddedResource Include="EmbeddedResources2\test file 4.txt" />
+    <EmbeddedResource Include="EmbeddedResources1/test file 1.txt" LogicalName="EmbeddedResourceBrowser.Tests.EmbeddedResources1/test file 1.txt" />
+    <EmbeddedResource Include="EmbeddedResources1/test file 2.txt" />
+    <EmbeddedResource Include="EmbeddedResources1/EmbeddedResourceSubdirectory/test file 3.txt" />
+    <EmbeddedResource Include="EmbeddedResources2/test file 4.txt" />
   </ItemGroup>
 </Project>

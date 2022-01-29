@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources1\test file 2-1.txt" />
-    <EmbeddedResource Include="EmbeddedResources3\test file 5.txt" />
-    <EmbeddedResource Update="**/*" LogicalName="$(AssemblyName)!$([System.String]::Copy('%(Identity)').Replace('\', '!'))" />
-    <EmbeddedResource Include="EmbeddedResources1\test file 1.txt" LogicalName="EmbeddedResourceBrowser.MergeTests!EmbeddedResources1/test file 1.txt" />
+    <EmbeddedResource Include="EmbeddedResources1/test file 2-1.txt" />
+    <EmbeddedResource Include="EmbeddedResources3/test file 5.txt" />
+    <EmbeddedResource Update="**/*" LogicalName="$(AssemblyName)!$([System.String]::Copy('%(Identity)').Replace('/', '!'))" />
+    <EmbeddedResource Include="EmbeddedResources1/test file 1.txt" LogicalName="EmbeddedResourceBrowser.MergeTests!EmbeddedResources1/test file 1.txt" />
   </ItemGroup>
 
 </Project>

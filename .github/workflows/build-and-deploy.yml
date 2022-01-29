@@ -122,7 +122,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 5.0.404
+        dotnet-version: 6.0.101
 
     - name: Install dependencies
       run: dotnet restore
@@ -192,7 +192,7 @@ jobs:
         {
           $projectDirectoryPath += $env:GITHUB_REF.Substring("refs/heads".Length)
         }
-        dotnet ./EmbeddedResourceBrowser.Documentation/bin/Release/net5.0/EmbeddedResourceBrowser.Documentation.dll $projectDirectoryPath
+        dotnet ./EmbeddedResourceBrowser.Documentation/bin/Release/net6.0/EmbeddedResourceBrowser.Documentation.dll $projectDirectoryPath
 
     - name: Publish Project Site
       uses: peaceiris/actions-gh-pages@v3

@@ -1,6 +1,6 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -17,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="EmbeddedResources1\test file 1.txt" LogicalName="EmbeddedResourceBrowser.Tests/EmbeddedResources1/test file 1.txt" />
+    <EmbeddedResource Include="not detected test file.txt" LogicalName="not detected test file.txt" />
+    <EmbeddedResource Include="EmbeddedResources1\test file 1.txt" LogicalName="EmbeddedResourceBrowser.Tests.EmbeddedResources1/test file 1.txt" />
     <EmbeddedResource Include="EmbeddedResources1\test file 2.txt" />
     <EmbeddedResource Include="EmbeddedResources1\EmbeddedResourceSubdirectory\test file 3.txt" />
     <EmbeddedResource Include="EmbeddedResources2\test file 4.txt" />

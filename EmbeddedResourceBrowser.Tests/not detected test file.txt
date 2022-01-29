@@ -1,0 +1,1 @@
+This is a text file. It is embedded without the assembly name at the beginning and because of that it will be ignored.

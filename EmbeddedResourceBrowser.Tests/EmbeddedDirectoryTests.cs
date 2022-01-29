@@ -185,6 +185,22 @@ namespace EmbeddedResourceBrowser.Tests
         }
 
         [Fact]
+        public void Merge_WithFilesInSubdirectoriesAndExpliticSeparator_MergesDirectories()
+        {
+            var embeddedDirectory = EmbeddedDirectory.Merge(new[] { typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly }, '.');
+
+            Assert.Equal(
+                new[]
+                {
+                    "EmbeddedResources1",
+                    "EmbeddedResourceSubdirectory",
+                    "EmbeddedResources2"
+                },
+                embeddedDirectory.GetAllSubdirectories().Select(directory => directory.Name)
+            );
+        }
+
+        [Fact]
         public void Merge_WithFilesInSubdirectories_MergesFiles()
         {
             var embeddedDirectory = EmbeddedDirectory.Merge(typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly);
@@ -221,6 +237,60 @@ namespace EmbeddedResourceBrowser.Tests
                     {
                         Name = "test file 5.txt",
                         Content = "This is a fifth text file, just for testing the merge scenario."
+                    }
+                },
+                embeddedDirectory
+                    .GetAllFiles()
+                    .Select(file =>
+                    {
+                        using var streamReader = new StreamReader(file.OpenRead());
+
+                        return new
+                        {
+                            file.Name,
+                            Content = streamReader.ReadToEnd()
+                        };
+                    })
+            );
+        }
+
+        [Fact]
+        public void Merge_WithFilesInSubdirectoriesAndExplicitSeparator_MergesFiles()
+        {
+            var embeddedDirectory = EmbeddedDirectory.Merge(new[] { typeof(EmbeddedDirectoryTests).Assembly, typeof(SampleType).Assembly }, '.');
+
+            Assert.Equal(
+                new[]
+                {
+                    new
+                    {
+                        Name = "EmbeddedResources1!test file 2-1.txt",
+                        Content = "This text file does not override any content, just for testing the merge feature."
+                    },
+                    new
+                    {
+                        Name = "EmbeddedResources1/test file 1.txt",
+                        Content = "This is a text file. The content is overridden, just for testing the merge feature."
+                    },
+                    new
+                    {
+                        Name = "EmbeddedResources3!test file 5.txt",
+                        Content = "This is a fifth text file, just for testing the merge scenario."
+                    },
+                    new
+                    {
+                        Name = "test file 2.txt",
+                        Content = "This is a second text file, just for testing."
+                    },
+                    new
+                    {
+                        Name = "test file 3.txt",
+                        Content = "This is a third text file, just for testing."
+                    },
+                    new
+                    {
+                        Name = "test file 4.txt",
+                        Content = "This is a fourth text file, just for testing."
                     }
                 },
                 embeddedDirectory

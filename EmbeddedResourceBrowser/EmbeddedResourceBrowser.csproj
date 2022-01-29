@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard1.6</TargetFramework>
     <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
@@ -13,10 +13,12 @@
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/Andrei15193/EmbeddedResourceBrowser.git</RepositoryUrl>
     <PackageReleaseNotes>
-* Added Merge method for creating an EmbeddedDirectory.
-* Added GetAllSubdirectories method for traversing all subdirectories of an EmbeddedDirectory.
+* Added automatic embedded resource file path detection.
     </PackageReleaseNotes>
     <PackageTags>embedded resource assembly browser</PackageTags>
+    <AssemblyOriginatorKeyFile>EmbeddedResourceBrowser.snk</AssemblyOriginatorKeyFile>
+    <Version Condition="Exists($(AssemblyOriginatorKeyFile))">1000.1000.1000.1000</Version>
+    <SignAssembly Condition="Exists($(AssemblyOriginatorKeyFile))">true</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

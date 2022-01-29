@@ -7,8 +7,50 @@ namespace EmbeddedResourceBrowser
 {
     /// <summary>Represents a directory of embedded resources.</summary>
     /// <remarks>
+    /// <para>
     /// The embedded resources are mapped using case-insensitive matching, if multiple assemblies or files (in the same directory) only differ
     /// in casing (e.g.: <c>TEST FILE.txt</c> is the same as <c>test file.txt</c>) then an <see cref="ArgumentException"/> is thrown.
+    /// </para>
+    /// <para>
+    /// By default, embedded resources use the dot (<c>.</c>) as a separator for directory paths and the assembly name is placed at the beginning of the name.
+    /// <c>&lt;EmbeddedResource Include="MyDirectory/MySubdirectory/MyFile.ext" /&gt;</c> is mapped to
+    /// <c>MyAssemblyName.MyDirectory.MySubdirectory.MyFile.ext</c>. When processing files, it is expected that files have extensions, thus the last dot
+    /// (<c>.</c>) is ignored from the file path. When processing files, the assembly name is expected to be at the beginning of an embedded resource and the
+    /// character immediately afterwards is used to determine the path separator. This will make the resource be mapped to the following structure
+    /// <c>MyDirectory/MySubdirectory/MyFile.ext</c>.
+    /// </para>
+    /// <para>
+    /// To embed the file under a different name use the <c>LogicalName</c> attribute (or specify it as a child element), this allows the use of different
+    /// path separators which can be useful if the embedded resources have dots (<c>.</c>) in their name (e.g.: <c>MyFileWithVersion@1.2.3.txt</c>) or when
+    /// files or directories start with a number (e.g.: <c>MyDirectory/1.2.3/File.txt</c>). By default, the file will be embedded under
+    /// <c>MyAssemblyName.MyDirectory._1._2._3.File.txt</c>.
+    /// </para>
+    /// <para>
+    /// When specifying the <c>LogicalName</c> make sure to specify the assembly name followed by the path separator otherwise the library will not pick
+    /// up these files. The library is made so that it works with the default naming structure.
+    /// </para>
+    /// <para>
+    /// Specifying a different path separator can be done individually on each file.
+    /// </para>
+    /// <code lang="xml">
+    /// &lt;!-- This uses '/' as the path separator --&gt;
+    /// &lt;EmbeddedResource Include="MyDirectory/MySubdirectory/MyFile.ext" LogicalName="MyAssemblyName/MyDirectory/MySubdirectory/MyFile.ext" /&gt;
+    /// 
+    /// &lt;!-- This uses '!' as the path separator --&gt;
+    /// &lt;EmbeddedResource Include="MyDirectory/MySubdirectory/MyFile.ext" LogicalName="MyAssemblyName!MyDirectory!MySubdirectory!MyFile.ext" /&gt;
+    /// </code>
+    /// <para>
+    /// The path separator is determined per file, there is no global setting for path separators allowing for mixed settings. An alternative would be to
+    /// specify all the embedded files and afterwards update all the matching files. The following element will update all embedded resources that have
+    /// been specified up to that element in the <c>.csproj</c> (or any other project file type) to have the assembly name at the beginning and normalize
+    /// the paths to use forward slash as a separator. This will cause all included embedded resources to that point to have the same structure as in the
+    /// file system. See <a href="https://docs.microsoft.com/visualstudio/msbuild/msbuild-well-known-item-metadata">MSBuild well-known item metadata</a>
+    /// and <a href="https://docs.microsoft.com/visualstudio/msbuild/common-msbuild-project-properties">Common MSBuild project properties</a> for more
+    /// information, they work with <c>dotnet build</c> as well.
+    /// </para>
+    /// <code lang="xml">
+    /// &lt;EmbeddedResource Update="**/*" LogicalName="$(AssemblyName)/$([System.String]::Copy('%(Identity)').Replace('\', '/'))" /&gt;
+    /// </code>
     /// </remarks>
     public class EmbeddedDirectory
     {
@@ -62,7 +104,10 @@ namespace EmbeddedResourceBrowser
                 assemblies
                     .SelectMany(assembly => assembly is null
                         ? throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies))
-                        : assembly.GetManifestResourceNames().Select(resourceName => new ResourcePair(assembly, resourceName, directoryPathSeparator)))
+                        : assembly
+                            .GetManifestResourceNames()
+                            .Where(resourceName => resourceName.Length > assembly.GetName().Name.Length + 2 && resourceName.StartsWith(assembly.GetName().Name, StringComparison.OrdinalIgnoreCase))
+                            .Select(resourceName => new ResourcePair(assembly, resourceName, directoryPathSeparator)))
                     .GroupBy(resourcePair => resourcePair.ResourceName, (resourceName, resourcePairs) => resourcePairs.Last(), StringComparer.OrdinalIgnoreCase)
             );
         }
@@ -103,7 +148,21 @@ namespace EmbeddedResourceBrowser
         /// The matching is done by ignoring the case of each directory and file.
         /// </example>
         public static EmbeddedDirectory Merge(IEnumerable<Assembly> assemblies)
-            => Merge(assemblies, DefaultDirectoryPathSeparator);
+        {
+            if (assemblies is null)
+                throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies));
+
+            return new EmbeddedDirectory(
+                assemblies
+                    .SelectMany(assembly => assembly is null
+                        ? throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies))
+                        : assembly
+                            .GetManifestResourceNames()
+                            .Where(resourceName => resourceName.StartsWith(assembly.GetName().Name, StringComparison.OrdinalIgnoreCase))
+                            .Select(resourceName => new ResourcePair(assembly, resourceName)))
+                    .GroupBy(resourcePair => resourcePair.ResourceName, (resourceName, resourcePairs) => resourcePairs.Last(), StringComparer.OrdinalIgnoreCase)
+            );
+        }
 
         /// <summary>Creates an <see cref="EmbeddedDirectory"/> containing the resources from all provided <paramref name="assemblies"/> using a merge strategy.</summary>
         /// <param name="assemblies">The <see cref="Assembly"/> objects from where to map embedded resources.</param>
@@ -141,7 +200,7 @@ namespace EmbeddedResourceBrowser
         /// The matching is done by ignoring the case of each directory and file.
         /// </example>
         public static EmbeddedDirectory Merge(params Assembly[] assemblies)
-            => Merge(assemblies, DefaultDirectoryPathSeparator);
+            => Merge((IEnumerable<Assembly>)assemblies);
 
         /// <summary>Initializes a new instance of the <see cref="EmbeddedDirectory"/> class.</summary>
         /// <param name="assembly">The <see cref="Assembly"/> from where to map embedded resources.</param>
@@ -158,7 +217,7 @@ namespace EmbeddedResourceBrowser
         /// <exception cref="ArgumentNullException">Thrown when the provided <paramref name="assembly"/> is <c>null</c>.</exception>
         /// <exception cref="ArgumentException">Thrown when multiple files have the same case-insensitive name, but different case-sensitive names.</exception>
         public EmbeddedDirectory(Assembly assembly)
-            : this(assembly, DefaultDirectoryPathSeparator)
+            : this(null, assembly is null ? throw new ArgumentNullException(nameof(assembly)) : assembly.GetName().Name, assembly)
         {
         }
 
@@ -194,8 +253,21 @@ namespace EmbeddedResourceBrowser
         /// <para>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.</para>
         /// </exception>
         public EmbeddedDirectory(IEnumerable<Assembly> assemblies)
-            : this(assemblies, DefaultDirectoryPathSeparator)
         {
+            if (assemblies is null)
+                throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies));
+
+            Name = string.Empty;
+            ParentDirectory = null;
+            Subdirectories = new NamedReadOnlyList<EmbeddedDirectory>(
+                assemblies
+                    .Select(assembly => assembly is null
+                        ? throw new ArgumentException("Cannot be null or contain null values.", nameof(assemblies))
+                        : new EmbeddedDirectory(this, assembly.GetName().Name, assembly)
+                    ),
+                directory => directory.Name
+            );
+            Files = _emptyEmbeddedFilesList;
         }
 
         /// <summary>Initializes a new instance of the <see cref="EmbeddedDirectory"/> class.</summary>
@@ -205,12 +277,19 @@ namespace EmbeddedResourceBrowser
         /// <para>Thrown when multiple assembles or files have the same case-insensitive name, but different case-sensitive names.</para>
         /// </exception>
         public EmbeddedDirectory(params Assembly[] assemblies)
-            : this(assemblies, DefaultDirectoryPathSeparator)
+            : this((IEnumerable<Assembly>)assemblies)
         {
         }
 
+        private EmbeddedDirectory(EmbeddedDirectory parentDirectory, string name, Assembly assembly)
+            : this(assembly.GetManifestResourceNames().Where(resourceName => resourceName.StartsWith(assembly.GetName().Name, StringComparison.OrdinalIgnoreCase)).Select(resourceFullName => new ResourcePair(assembly, resourceFullName)))
+        {
+            ParentDirectory = parentDirectory;
+            Name = name;
+        }
+
         private EmbeddedDirectory(EmbeddedDirectory parentDirectory, string name, Assembly assembly, char directoryPathSeparator)
-            : this(assembly.GetManifestResourceNames().Select(resourceFullName => new ResourcePair(assembly, resourceFullName, directoryPathSeparator)))
+            : this(assembly.GetManifestResourceNames().Where(resourceName => resourceName.StartsWith(assembly.GetName().Name, StringComparison.OrdinalIgnoreCase)).Select(resourceFullName => new ResourcePair(assembly, resourceFullName, directoryPathSeparator)))
         {
             ParentDirectory = parentDirectory;
             Name = name;
@@ -283,6 +362,20 @@ namespace EmbeddedResourceBrowser
             private readonly Assembly _assembly;
             private readonly string _resourceFullName;
             private readonly string _fileName;
+
+            public ResourcePair(Assembly assembly, string resourceFullName)
+            {
+                var assemblyName = assembly.GetName().Name;
+                var directorySeparator = resourceFullName[assemblyName.Length];
+
+                _assembly = assembly;
+                _resourceFullName = resourceFullName;
+                ResourceName = resourceFullName.Substring(assemblyName.Length + 1);
+                _fileName = ResourceName.Substring(ResourceName.LastIndexOf(directorySeparator, ResourceName.LastIndexOf('.') - 1) + 1);
+                DirectoryPath = ResourceName.Length == _fileName.Length
+                    ? Enumerable.Empty<string>()
+                    : ResourceName.Substring(0, ResourceName.Length - _fileName.Length - 1).Split(directorySeparator);
+            }
 
             public ResourcePair(Assembly assembly, string resourceFullName, char directoryPathSeparator)
             {

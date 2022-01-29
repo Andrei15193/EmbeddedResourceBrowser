@@ -72,7 +72,7 @@
 </table>
 
 <h3>Remarks</h3>
-<p>The library is rather small and provides a directory-like structure for browsing embedded resources. You can load resources in multiple ways depending on how you wish to use them in your application. Before detailing each approach it is important to note that embedded resources in .NET assemblies use the <code>.</code> character as a separator for directories. This can be a bit confusing because we can add the <code>.</code> in the name of a directory or a file and there will be absolutely no difference of having a directory structure or using <code>.</code> in the name. For instance the following two resources are identical and the compiler will issue an error indicating this.
+<p>The library is rather small and provides a directory-like structure for browsing embedded resources. You can load resources in multiple ways depending on how you wish to use them in your application. Before detailing each approach it is important to note that embedded resources in .NET assemblies use the dot (<code>.</code>) character as a separator for directories. This can be a bit confusing because we can add the dot (<code>.</code>) in the name of a directory or a file and there will be absolutely no difference of having a directory structure or using the dot (<code>.</code>) in the name. For instance, the following two resources are identical and the compiler will issue an error indicating this.
 </p>
 <pre><code>Assembly/
     Directory/
@@ -81,17 +81,19 @@
 
 Both resources are embedded (by default) with the following logical name:
 Assembly.Directory.embedded file.txt</pre></code>
-<p>If you wish, you can provide a custom logical name for your embedded resource, keep in mind that you need to specify this manually. For instance, you can use <code>/</code> as a separator by specifying the logical name of an embedded resource. For more information refer to: <a href="https://docs.microsoft.com/visualstudio/msbuild/common-msbuild-project-items?view=vs-2019#embeddedresource">Common MSBuild project items - EmbeddedResource</a>.
+<p>If you wish, you can provide a custom logical name for your embedded resource, keep in mind that you need to specify this manually. For instance, you can use the forwards slash (<code>/</code>) as a separator by specifying the logical name of an embedded resource. For more information refer to: <a href="https://docs.microsoft.com/visualstudio/msbuild/common-msbuild-project-items#embeddedresource">Common MSBuild project items - EmbeddedResource</a>.
 </p>
-<div class="highlight" ><pre style="; " ><span class="p">&lt;</span><span class=""></span><span class="nt">EmbeddedResource</span><span class=""> </span><span class="na">Include</span><span class="o">=</span><span class=""></span><span class="s">&quot;Directory.embedded file.txt&quot;</span><span class=""> </span><span class="na">LogicalName</span><span class="o">=</span><span class=""></span><span class="s">&quot;Directory/embedded file.txt&quot;</span><span class="p">/</span><span class=""></span><span class="p">&gt;</span>
+<div class="highlight" ><pre style="; " ><span class="p">&lt;</span><span class=""></span><span class="nt">EmbeddedResource</span><span class=""> </span><span class="na">Include</span><span class="o">=</span><span class=""></span><span class="s">&quot;Directory.embedded file.txt&quot;</span><span class=""> </span><span class="na">LogicalName</span><span class="o">=</span><span class=""></span><span class="s">&quot;AssemblyName/Directory/embedded file.txt&quot;</span><span class="p">/</span><span class=""></span><span class="p">&gt;</span>
 </pre></div>
 
-<p>Implicitly, the library uses the <code>.</code> character as a separator for directories in the remained of the name. The remained of the name is determined by removing the assembly name from the beginning of the embedded resource name (which can contain <code>.</code> characters because the assembly name is available through the assembly object from which resources are being loaded) and removing the file name which contains exactly one <code>.</code> character which delimits the extension. For instance, the following resource <code>My.Assembly.Name.One.Two.Three.File.Extension</code> has the <code>One.Two.Three</code> name remained because the assembly name is <code>My.Assembly.Name</code> and the file name is <code>File.Extension</code>. The default separator for splitting the directory path from the remained is <code>.</code> leading to the following structure: <code>My.Assembly.Name/One/Two/Three/File.Extension</code>.
+<p>The library detects the path separator from the embedded file name. It expects that embedded resource names start with the assembly name followed by the path separator. By default, this would mean the dot character ('<code>.</code>'), however resources can be embedded under a different name using the <code>LogicalName</code> attribute. When using this option ensure that the assembly name is added at the beginning of the name and add the path separator after it.
+</p>
+<p>See <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> for more information.
 </p>
 <h4>Working With One Assembly</h4>
 
 
-<p>Generally you may be working with just one assembly from where you load embedded resources. In this case initialize a new <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> by passing the assembly object containing the embedded resources to the constructor. This will load all resources in a directory tree where the root is the directory having the same name as the assembly name and all resources can be browsed, and loaded, from there. The following method will concatenate the contents of each embedded file at the top level of the assembly.
+<p>Generally, you may be working with just one assembly from where you load embedded resources. In this case initialize a new <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> by passing the assembly object containing the embedded resources to the constructor. This will load all resources in a directory tree where the root is the directory having the same name as the assembly name and all resources can be browsed, and loaded, from there. The following method will concatenate the contents of each embedded file at the top level of the assembly.
 </p>
 <div class="highlight" ><pre style="; " ><span class="kt">string</span><span class=""> </span><span class="nf">ConcatResources</span><span class=""></span><span class="p">()</span><span class=""></span>
 <span class=""></span><span class="p">{</span><span class=""></span>
@@ -108,7 +110,7 @@ Assembly.Directory.embedded file.txt</pre></code>
 <h4>Working With Multiple Assemblies</h4>
 
 
-<p>Sometimes the project can be rather complex and embedded resources are placed in multiple assemblies. In this case an <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> can be created by providing all assemblies as constructor arguments which in turn will create a root directory containing a subdirectory for each provided assembly that have the same structure at in the working with one assembly scenario. The following method will concatenate the contents of each embedded file at the top level of each assembly, but also append the assembly name from where files are being read.
+<p>Sometimes the project can be rather complex and embedded resources are placed in multiple assemblies. In this case an <a href="EmbeddedResourceBrowserEmbeddedDirectory.html">EmbeddedDirectory</a> can be created by providing all assemblies as constructor arguments which in turn will create a root directory containing a subdirectory for each provided assembly that have the same structure as in the working with one assembly scenario. The following method will concatenate the contents of each embedded file at the top level of each assembly, but also append the assembly name from where files are being read.
 </p>
 <div class="highlight" ><pre style="; " ><span class="kt">string</span><span class=""> </span><span class="nf">ConcatResources</span><span class=""></span><span class="p">()</span><span class=""></span>
 <span class=""></span><span class="p">{</span><span class=""></span>
@@ -132,7 +134,7 @@ Assembly.Directory.embedded file.txt</pre></code>
 <h4>Working With Multiple Assemblies (Merge Method)</h4>
 
 
-<p>A different scenario when working with multiple assemblies is when we want to have resources that are placed in multiple assemblies, but instead of leading each of them we want to have a precedence between them, so even though we have multiple assemblies with embedded resources, we want to provide an implicit set that can be overriden in other assemblies. For instance, I would like to provide a default set of embedded resources that can be overridden by users of my library.
+<p>A different scenario when working with multiple assemblies is when we want to have resources that are placed in multiple assemblies, but instead of loading each of them we want to have a precedence between them, so even though we have multiple assemblies with embedded resources, we want to provide an implicit set that can be overriden in other assemblies. For instance, I would like to provide a default set of embedded resources that can be overridden by users of my library.
 </p>
 <p>Given the following structure of embedded directories, I can override any of these resources (or add) from a different assembly using the <a href="EmbeddedResourceBrowserEmbeddedDirectory.Merge(-A0345635DD17F2939A06001708AD7DD3.html">Merge</a>(<a href="https://docs.microsoft.com/dotnet/api/System.Collections.Generic.IEnumerable-1?view=netstandard-1.6">IEnumerable</a>&lt;<a href="https://docs.microsoft.com/dotnet/api/System.Reflection.Assembly?view=netstandard-1.6">Assembly</a>&gt;) method.
 </p>

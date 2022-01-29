@@ -204,6 +204,22 @@
 <h3>Remarks</h3>
 <p>The embedded resources are mapped using case-insensitive matching, if multiple assemblies or files (in the same directory) only differ in casing (e.g.: <code>TEST FILE.txt</code> is the same as <code>test file.txt</code>) then an <a href="https://docs.microsoft.com/dotnet/api/System.ArgumentException?view=netstandard-1.6">ArgumentException</a> is thrown.
 </p>
+<p>By default, embedded resources use the dot (<code>.</code>) as a separator for directory paths and the assembly name is placed at the beginning of the name. <code>&lt;EmbeddedResource Include=&quot;MyDirectory/MySubdirectory/MyFile.ext&quot; /&gt;</code> is mapped to <code>MyAssemblyName.MyDirectory.MySubdirectory.MyFile.ext</code>. When processing files, it is expected that files have extensions, thus the last dot (<code>.</code>) is ignored from the file path. When processing files, the assembly name is expected to be at the beginning of an embedded resource and the character immediately afterwards is used to determine the path separator. This will make the resource be mapped to the following structure <code>MyDirectory/MySubdirectory/MyFile.ext</code>.
+</p>
+<p>To embed the file under a different name use the <code>LogicalName</code> attribute (or specify it as a child element), this allows the use of different path separators which can be useful if the embedded resources have dots (<code>.</code>) in their name (e.g.: <code>MyFileWithVersion@1.2.3.txt</code>) or when files or directories start with a number (e.g.: <code>MyDirectory/1.2.3/File.txt</code>). By default, the file will be embedded under <code>MyAssemblyName.MyDirectory._1._2._3.File.txt</code>.
+</p>
+<p>When specifying the <code>LogicalName</code> make sure to specify the assembly name followed by the path separator otherwise the library will not pick up these files. The library is made so that it works with the default naming structure.
+</p>
+<p>Specifying a different path separator can be done individually on each file.
+</p>
+<pre><code>&lt;!-- This uses '/' as the path separator --&gt;
+&lt;EmbeddedResource Include=&quot;MyDirectory/MySubdirectory/MyFile.ext&quot; LogicalName=&quot;MyAssemblyName/MyDirectory/MySubdirectory/MyFile.ext&quot; /&gt;
+
+&lt;!-- This uses '!' as the path separator --&gt;
+&lt;EmbeddedResource Include=&quot;MyDirectory/MySubdirectory/MyFile.ext&quot; LogicalName=&quot;MyAssemblyName!MyDirectory!MySubdirectory!MyFile.ext&quot; /&gt;</pre></code>
+<p>The path separator is determined per file, there is no global setting for path separators allowing for mixed settings. An alternative would be to specify all the embedded files and afterwards update all the matching files. The following element will update all embedded resources that have been specified up to that element in the <code>.csproj</code> (or any other project file type) to have the assembly name at the beginning and normalize the paths to use forward slash as a separator. This will cause all included embedded resources to that point to have the same structure as in the file system. See <a href="https://docs.microsoft.com/visualstudio/msbuild/msbuild-well-known-item-metadata">MSBuild well-known item metadata</a> and <a href="https://docs.microsoft.com/visualstudio/msbuild/common-msbuild-project-properties">Common MSBuild project properties</a> for more information, they work with <code>dotnet build</code> as well.
+</p>
+<pre><code>&lt;EmbeddedResource Update=&quot;**/*&quot; LogicalName=&quot;$(AssemblyName)/$([System.String]::Copy('%(Identity)').Replace('\', '/'))&quot; /&gt;</pre></code>
 
         </div>
     </div>
